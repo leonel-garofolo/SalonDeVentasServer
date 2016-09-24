@@ -24,7 +24,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  * Persistent class for entity stored in table "producto"
@@ -56,12 +55,10 @@ public class ProductoEntity implements Serializable {
     // ENTITY DATA FIELDS 
     //----------------------------------------------------------------------    
     @Column(name="nombre", length=90)
-	@Size(min=0, max=90)	
-    private String     nombre       ;
+	 private String     nombre       ;
 
     @Column(name="detalle", length=255)
-	@Size(min=0, max=255)	
-    private String     detalle      ;
+	 private String     detalle      ;
 
 	// "precioproductoIdprecioproducto" (column "precioproducto_idprecioproducto") is not defined by itself because used as FK in a link 
 

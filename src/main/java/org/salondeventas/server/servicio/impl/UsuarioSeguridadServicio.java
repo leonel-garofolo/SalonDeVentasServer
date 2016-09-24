@@ -12,7 +12,6 @@ public class UsuarioSeguridadServicio implements IUsuarioSeguridadServicio  {
 	private IUsuarioSeguridadDAO usuarioSeguridadDAO;
 
 	public boolean comprobarUsuario(String usuario, String clave) {
-		System.out.println("Entro a servicio UsuarioSeguridadServicio");
 		return usuarioSeguridadDAO.comprobarUsuario(usuario, clave);
 	}
 }

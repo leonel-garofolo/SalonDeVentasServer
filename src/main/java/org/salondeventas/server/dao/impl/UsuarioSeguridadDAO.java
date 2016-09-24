@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class UsuarioSeguridadDAO extends GenericDAOWithHibernate<UsuarioEntity, Long> implements IUsuarioSeguridadDAO {	
 	
 	public boolean comprobarUsuario(String usuario, String clave) throws HibernateException{
-		System.out.println("**********Llego");
+		System.out.println("entro");
 		List<UsuarioEntity> list = sessionFactory.getCurrentSession().createQuery("Select t from " + persistentClass.getSimpleName() + " t where t.nombre = '" + usuario + "' and t.clave = '" + clave + "'").list();
 		if(list.size() > 0){
 			return true;

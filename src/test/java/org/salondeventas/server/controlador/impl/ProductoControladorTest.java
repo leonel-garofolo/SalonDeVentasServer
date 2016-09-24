@@ -18,36 +18,39 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
 import org.salondeventas.server.modelo.jpa.ProductoEntity;
-import org.salondeventas.server.servicio.impl.UsuarioSeguridadServicio;
+import org.salondeventas.server.servicio.IUsuarioSeguridadServicio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"file:src/test/resources/applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext.xml"})
 @WebAppConfiguration
 public class ProductoControladorTest extends JerseyTest {
 	
-	private ProductoControlador productoControlador;	
+	private ProductoControlador productoControlador;
+	
+	@Autowired
+	private IUsuarioSeguridadServicio usuarioSeguridadServicio;	
+		
 	@Override
 	protected Application configure() {
 		productoControlador = Mockito.mock(ProductoControlador.class);
 		return new ResourceConfig(ProductoControlador.class);
-	}
-	/*
-	@Before
-    public void setUp() throws Exception {
-        super.setUp();
-       // usuarioSeguridadServicio = (UsuarioSeguridadServicio) getSpringApplicationContext().getBean("someService");
-        Assert.assertNotNull(usuarioSeguridadServicio);
-    }*/
+	}	
 
     @After
     public void after() throws Exception {
         super.tearDown();
     }
-
+    
+    @Test
+    public void testServer(){
+    	usuarioSeguridadServicio.comprobarUsuario("leonel", "123");
+    }
+ 
 	@Test
 	public void mockedAddProveedor() {
 		final String pathToCall = "producto/agregar/";

@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("/producto")
 public class ProductoControlador implements IProductoControlador{
 	
-	@Autowired
-    private Validator validator;
+	//@Autowired
+    //private Validator validator;
 	 
 	@Autowired 
 	private IProductoServicio productoServicio;	
@@ -45,9 +45,18 @@ public class ProductoControlador implements IProductoControlador{
 	public boolean agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ProductoEntity entity) {		
 		System.out.println("Entro al server");
 		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			/*
 			Set<ConstraintViolation<ProductoEntity>> errorValidacion = validator.validate(entity);
-			
-			return productoServicio.agregar(entity);
+			 if (errorValidacion.size() > 0) {
+                for (ConstraintViolation<ProductoEntity> ev : errorValidacion) {
+                    System.out.println(ev.getMessage());	                    
+                }	
+                return false;
+            }
+            */
+			boolean test = productoServicio.agregar(entity);
+			System.out.println("Estado:" + test);
+			return test;
 		}else{
 			return false;
 		}		
@@ -58,7 +67,6 @@ public class ProductoControlador implements IProductoControlador{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String get() {	
-		System.out.println("Entro");
 		if(usuarioSeguridadServicio.comprobarUsuario("leonel", "123")){
 			return "anduvo";
 		}else{
