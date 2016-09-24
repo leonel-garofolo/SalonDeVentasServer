@@ -1,0 +1,73 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import ${ROOT_PKG}.dao.I${entity.name}DAO;
+import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
+import ${ROOT_PKG}.servicio.I${entity.name}Servicio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("${uncapitalizedEntityName}Servicio")
+public class ${entity.name}Servicio implements I${entity.name}Servicio {
+	
+	@Autowired
+	private I${entity.name}DAO ${uncapitalizedEntityName}Dao;
+
+	public boolean agregar(${entity.name}Entity obj) {
+		if(obj!= null){
+			try {
+				${uncapitalizedEntityName}Dao.save(obj);
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	
+	public boolean borrar(${entity.name}Entity obj) {
+		if(obj!= null){
+			try {
+				${uncapitalizedEntityName}Dao.delete(obj);
+			} catch (Exception e) {
+				return false;
+			}
+		}			
+		return true;
+	}
+
+	
+	public ${entity.name}Entity obtener(long id) {
+		if(id != 0){
+			try{
+				return ${uncapitalizedEntityName}Dao.get(id);
+			}catch (Exception e) {
+			}
+		}
+		return null;
+	}
+
+	
+	public boolean actualizar(${entity.name}Entity obj) {
+		if(obj!= null){
+			try {
+				${uncapitalizedEntityName}Dao.update(obj);
+			} catch (Exception e) {
+				return false;
+			}
+		}		
+		return true;		
+	}
+
+	
+	public List<${entity.name}Entity> obtenerTodos() {		
+		try {
+			return ${uncapitalizedEntityName}Dao.getAll();
+		} catch (Exception e) {
+		}
+		return null;
+	}
+}

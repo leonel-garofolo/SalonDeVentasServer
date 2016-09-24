@@ -1,0 +1,74 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+#set($toLowerCaseEntityName = $fn.toLowerCase(${entity.name}) )
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.util.List;
+import ${ROOT_PKG}.controlador.I${entity.name}Controlador;
+import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
+import ${ROOT_PKG}.servicio.I${entity.name}Servicio;
+import ${ROOT_PKG}.servicio.IUsuarioSeguridadServicio;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Path("/${toLowerCaseEntityName}")
+public class ${entity.name}Controlador implements I${entity.name}Controlador{
+	
+	@Autowired
+	protected I${entity.name}Servicio ${uncapitalizedEntityName}Servicio;	
+	@Autowired
+	protected IUsuarioSeguridadServicio usuarioSeguridadServicio;			
+			
+	@POST
+	@Path("/agregar/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			return ${uncapitalizedEntityName}Servicio.agregar(entity);
+		}else{
+			return false;
+		}		
+	}
+	
+	@POST
+	@Path("/borrar/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean borrar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		System.out.println("Borrar...");
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@POST
+	@Path("/obtener/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ${entity.name}Entity obtener(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@POST
+	@Path("/actualizar/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@POST
+	@Path("/obtenertodos/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

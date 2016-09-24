@@ -1,0 +1,23 @@
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
+import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
+
+public interface I${entity.name}DAO {
+    
+	@Transactional
+	List<${entity.name}Entity> getAll();
+
+	@Transactional
+	void save(${entity.name}Entity entity);
+
+	@Transactional
+	void update(${entity.name}Entity entity);
+
+	@Transactional
+	void delete(${entity.name}Entity entity);
+
+	@Transactional
+	${entity.name}Entity get(Long id);
+}

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/129/trunk/DistribuidoraWeb/src/main/resources/META-INF/spring
+END
+applicationContext.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/129/trunk/DistribuidoraWeb/src/main/resources/META-INF/spring/applicationContext.xml
+END
+spring-all-module.xml
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/99/trunk/DistribuidoraWeb/src/main/resources/META-INF/spring/spring-all-module.xml
+END
+spring-webflow.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/99/trunk/DistribuidoraWeb/src/main/resources/META-INF/spring/spring-webflow.xml
+END
+spring-mvc.xml
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/99/trunk/DistribuidoraWeb/src/main/resources/META-INF/spring/spring-mvc.xml
+END
