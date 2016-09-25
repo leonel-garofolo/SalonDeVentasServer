@@ -5,13 +5,14 @@ import org.salondeventas.server.controlador.IEmpresaControlador;
 import org.salondeventas.server.modelo.jpa.EmpresaEntity;
 import org.salondeventas.server.servicio.IEmpresaServicio;
 import org.salondeventas.server.servicio.IUsuarioSeguridadServicio;
+import org.salondeventas.server.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.PathParam;
 
 @Path("/empresa")
 public class EmpresaControlador implements IEmpresaControlador{
@@ -25,11 +26,15 @@ public class EmpresaControlador implements IEmpresaControlador{
 	@Path("/agregar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean agregar(@PathParam("usuario") String usuario, @PathParam("clave") String clave, EmpresaEntity entity) {
+	public String agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, EmpresaEntity entity) {
 		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			return empresaServicio.agregar(entity);
+			boolean estado=  empresaServicio.agregar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
 		}else{
-			return false;
+			return MensajesSistema.SERVER_ERROR;
 		}		
 	}
 	
@@ -37,36 +42,63 @@ public class EmpresaControlador implements IEmpresaControlador{
 	@Path("/borrar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean borrar(@PathParam("usuario") String usuario, @PathParam("clave") String clave, EmpresaEntity entity) {
-		System.out.println("Borrar...");
-		// TODO Auto-generated method stub
-		return false;
+	public String borrar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, EmpresaEntity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			boolean estado=  empresaServicio.borrar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
 	}
 
 	@POST
 	@Path("/obtener/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public EmpresaEntity obtener(@PathParam("usuario") String usuario, @PathParam("clave") String clave, long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public EmpresaEntity obtener(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, long id) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			EmpresaEntity producto=  empresaServicio.obtener(id);
+			if(producto != null){
+				return producto;
+			}
+			return null;
+		}else{
+			return null;
+		}
 	}
 
 	@POST
 	@Path("/actualizar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean actualizar(@PathParam("usuario") String usuario, @PathParam("clave") String clave, EmpresaEntity entity) {
-		// TODO Auto-generated method stub
-		return false;
+	public String actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, EmpresaEntity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			boolean estado=  empresaServicio.actualizar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
 	}
 
 	@POST
 	@Path("/obtenertodos/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List obtenerTodos(@PathParam("usuario") String usuario, @PathParam("clave") String clave) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<EmpresaEntity> obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			List<EmpresaEntity> empresas=  empresaServicio.obtenerTodos();
+			if(empresas != null){
+				return empresas;
+			}
+			return null;
+		}else{
+			return null;
+		}
 	}
 }

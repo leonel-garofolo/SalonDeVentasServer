@@ -7,6 +7,7 @@ import ${ROOT_PKG}.controlador.I${entity.name}Controlador;
 import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
 import ${ROOT_PKG}.servicio.I${entity.name}Servicio;
 import ${ROOT_PKG}.servicio.IUsuarioSeguridadServicio;
+import ${ROOT_PKG}.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Consumes;
@@ -27,11 +28,15 @@ public class ${entity.name}Controlador implements I${entity.name}Controlador{
 	@Path("/agregar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+	public String agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
 		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			return ${uncapitalizedEntityName}Servicio.agregar(entity);
+			boolean estado=  ${uncapitalizedEntityName}Servicio.agregar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
 		}else{
-			return false;
+			return MensajesSistema.SERVER_ERROR;
 		}		
 	}
 	
@@ -39,10 +44,16 @@ public class ${entity.name}Controlador implements I${entity.name}Controlador{
 	@Path("/borrar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean borrar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
-		System.out.println("Borrar...");
-		// TODO Auto-generated method stub
-		return false;
+	public String borrar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			boolean estado=  ${uncapitalizedEntityName}Servicio.borrar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
 	}
 
 	@POST
@@ -50,25 +61,46 @@ public class ${entity.name}Controlador implements I${entity.name}Controlador{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public ${entity.name}Entity obtener(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, long id) {
-		// TODO Auto-generated method stub
-		return null;
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			${entity.name}Entity producto=  ${uncapitalizedEntityName}Servicio.obtener(id);
+			if(producto != null){
+				return producto;
+			}
+			return null;
+		}else{
+			return null;
+		}
 	}
 
 	@POST
 	@Path("/actualizar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
-		// TODO Auto-generated method stub
-		return false;
+	public String actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			boolean estado=  ${uncapitalizedEntityName}Servicio.actualizar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
 	}
 
 	@POST
 	@Path("/obtenertodos/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<${entity.name}Entity> obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			List<${entity.name}Entity> ${uncapitalizedEntityName}s=  ${uncapitalizedEntityName}Servicio.obtenerTodos();
+			if(${uncapitalizedEntityName}s != null){
+				return ${uncapitalizedEntityName}s;
+			}
+			return null;
+		}else{
+			return null;
+		}
 	}
 }

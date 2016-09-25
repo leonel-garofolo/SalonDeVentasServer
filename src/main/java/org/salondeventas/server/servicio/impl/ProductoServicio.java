@@ -1,7 +1,8 @@
 package org.salondeventas.server.servicio.impl;
 
 import java.util.List;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.salondeventas.server.dao.IProductoDAO;
 import org.salondeventas.server.modelo.jpa.ProductoEntity;
 import org.salondeventas.server.servicio.IProductoServicio;

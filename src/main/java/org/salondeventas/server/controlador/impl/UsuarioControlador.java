@@ -5,13 +5,14 @@ import org.salondeventas.server.controlador.IUsuarioControlador;
 import org.salondeventas.server.modelo.jpa.UsuarioEntity;
 import org.salondeventas.server.servicio.IUsuarioServicio;
 import org.salondeventas.server.servicio.IUsuarioSeguridadServicio;
+import org.salondeventas.server.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.PathParam;
 
 @Path("/usuario")
 public class UsuarioControlador implements IUsuarioControlador{
@@ -25,11 +26,15 @@ public class UsuarioControlador implements IUsuarioControlador{
 	@Path("/agregar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean agregar(@PathParam("usuario") String usuario, @PathParam("clave") String clave, UsuarioEntity entity) {
+	public String agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, UsuarioEntity entity) {
 		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			return usuarioServicio.agregar(entity);
+			boolean estado=  usuarioServicio.agregar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
 		}else{
-			return false;
+			return MensajesSistema.SERVER_ERROR;
 		}		
 	}
 	
@@ -37,36 +42,63 @@ public class UsuarioControlador implements IUsuarioControlador{
 	@Path("/borrar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean borrar(@PathParam("usuario") String usuario, @PathParam("clave") String clave, UsuarioEntity entity) {
-		System.out.println("Borrar...");
-		// TODO Auto-generated method stub
-		return false;
+	public String borrar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, UsuarioEntity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			boolean estado=  usuarioServicio.borrar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
 	}
 
 	@POST
 	@Path("/obtener/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public UsuarioEntity obtener(@PathParam("usuario") String usuario, @PathParam("clave") String clave, long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public UsuarioEntity obtener(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, long id) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			UsuarioEntity producto=  usuarioServicio.obtener(id);
+			if(producto != null){
+				return producto;
+			}
+			return null;
+		}else{
+			return null;
+		}
 	}
 
 	@POST
 	@Path("/actualizar/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean actualizar(@PathParam("usuario") String usuario, @PathParam("clave") String clave, UsuarioEntity entity) {
-		// TODO Auto-generated method stub
-		return false;
+	public String actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, UsuarioEntity entity) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			boolean estado=  usuarioServicio.actualizar(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
 	}
 
 	@POST
 	@Path("/obtenertodos/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List obtenerTodos(@PathParam("usuario") String usuario, @PathParam("clave") String clave) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UsuarioEntity> obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+			List<UsuarioEntity> usuarios=  usuarioServicio.obtenerTodos();
+			if(usuarios != null){
+				return usuarios;
+			}
+			return null;
+		}else{
+			return null;
+		}
 	}
 }
