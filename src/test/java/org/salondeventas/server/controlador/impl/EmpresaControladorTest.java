@@ -2,6 +2,10 @@ package org.salondeventas.server.controlador.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.salondeventas.server.modelo.jpa.EmpresaEntity;
+import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmpresaControladorTest extends JerseyTest{
@@ -52,12 +58,15 @@ public class EmpresaControladorTest extends JerseyTest{
 
 	@Test
 	public void mockedAddEmpresaAgregar() {
-		final String pathToCall = "Empresa/conexion/";
-		System.out.println("test: " + pathToCall);
+		final String pathToCall = "empresa/agregar/";
 		
+		final EmpresaEntity empresa = new EmpresaEntity();	
+		empresa.setNombre("Venta de Ropa");
+		
+		final Entity<EmpresaEntity> empresaEntity = Entity.entity(empresa, MediaType.APPLICATION_JSON_TYPE);								
 		final Response responseWrapper = target(pathToCall)
 				.request(MediaType.APPLICATION_JSON_TYPE)				
-				.get();
+				.post(empresaEntity);
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
 	}
 }

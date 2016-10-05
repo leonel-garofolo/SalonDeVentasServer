@@ -2,6 +2,23 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
         version="2.0">
+        <!-- 
     <persistence-unit name="sysAdmin">
-    </persistence-unit>
+    </persistence-unit>    
+     -->
+    
+    <persistence-unit name="persistence-unit1" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<properties>
+			<!-- Database configuration -->
+			<property name="hibernate.connection.driver_class"  value="com.mysql.jdbc.Driver"/>
+			<property name="hibernate.connection.url"           value="jdbc:mysql://localhost:3306/salon_de_ventas"/>
+			<property name="hibernate.connection.username"      value="root"/>
+			<property name="hibernate.connection.password"      value="1234"/>
+			<property name="hibernate.dialect"                  value="org.hibernate.dialect.MySQLDialect"/>
+			<!-- Hibernate configuration -->
+			<property name="hibernate.hbm2ddl.auto"       value="none"/>
+			<property name="hibernate.show_sql"           value="true"/>
+		</properties>
+	</persistence-unit>
 </persistence>

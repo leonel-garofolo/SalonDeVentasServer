@@ -1,10 +1,9 @@
 package org.salondeventas.server.servicio.impl;
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.salondeventas.server.dao.IEmpresaDAO;
+
 import org.salondeventas.server.modelo.jpa.EmpresaEntity;
+import org.salondeventas.server.persistence.services.EmpresaPersistence;
 import org.salondeventas.server.servicio.IEmpresaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class EmpresaServicio implements IEmpresaServicio {
 	
 	@Autowired
-	private IEmpresaDAO empresaDao;
+	private EmpresaPersistence empresaDao;
 
 	public boolean agregar(EmpresaEntity obj) {
 		if(obj!= null){
@@ -42,7 +41,7 @@ public class EmpresaServicio implements IEmpresaServicio {
 	public EmpresaEntity obtener(long id) {
 		if(id != 0){
 			try{
-				return empresaDao.get(id);
+				return empresaDao.load((int)id);
 			}catch (Exception e) {
 			}
 		}
@@ -53,7 +52,7 @@ public class EmpresaServicio implements IEmpresaServicio {
 	public boolean actualizar(EmpresaEntity obj) {
 		if(obj!= null){
 			try {
-				empresaDao.update(obj);
+				empresaDao.save(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -64,7 +63,7 @@ public class EmpresaServicio implements IEmpresaServicio {
 	
 	public List<EmpresaEntity> obtenerTodos() {		
 		try {
-			return empresaDao.getAll();
+			return empresaDao.loadAll();
 		} catch (Exception e) {
 		}
 		return null;

@@ -1,10 +1,9 @@
 package org.salondeventas.server.servicio.impl;
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.salondeventas.server.dao.IPrecioproductoDAO;
+
 import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
+import org.salondeventas.server.persistence.services.PrecioproductoPersistence;
 import org.salondeventas.server.servicio.IPrecioproductoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class PrecioproductoServicio implements IPrecioproductoServicio {
 	
 	@Autowired
-	private IPrecioproductoDAO precioproductoDao;
+	private PrecioproductoPersistence precioproductoDao;
 
 	public boolean agregar(PrecioproductoEntity obj) {
 		if(obj!= null){
 			try {
-				precioproductoDao.save(obj);
+				precioproductoDao.insert(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -42,7 +41,7 @@ public class PrecioproductoServicio implements IPrecioproductoServicio {
 	public PrecioproductoEntity obtener(long id) {
 		if(id != 0){
 			try{
-				return precioproductoDao.get(id);
+				return precioproductoDao.load((int)id);
 			}catch (Exception e) {
 			}
 		}
@@ -53,7 +52,7 @@ public class PrecioproductoServicio implements IPrecioproductoServicio {
 	public boolean actualizar(PrecioproductoEntity obj) {
 		if(obj!= null){
 			try {
-				precioproductoDao.update(obj);
+				precioproductoDao.save(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -64,7 +63,7 @@ public class PrecioproductoServicio implements IPrecioproductoServicio {
 	
 	public List<PrecioproductoEntity> obtenerTodos() {		
 		try {
-			return precioproductoDao.getAll();
+			return precioproductoDao.loadAll();
 		} catch (Exception e) {
 		}
 		return null;

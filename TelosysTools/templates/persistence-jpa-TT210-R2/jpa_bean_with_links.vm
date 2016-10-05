@@ -73,7 +73,6 @@ public class ${entity.name} implements Serializable {
     //----------------------------------------------------------------------
 #foreach( $field in $entity.keyAttributes )
 $jpa.fieldAnnotations(4, $field)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private $field.formattedType(10) $field.formattedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
 #end
 

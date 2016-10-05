@@ -1,10 +1,9 @@
 package org.salondeventas.server.servicio.impl;
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.salondeventas.server.dao.IVentaDAO;
+
 import org.salondeventas.server.modelo.jpa.VentaEntity;
+import org.salondeventas.server.persistence.services.VentaPersistence;
 import org.salondeventas.server.servicio.IVentaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class VentaServicio implements IVentaServicio {
 	
 	@Autowired
-	private IVentaDAO ventaDao;
+	private VentaPersistence ventaDao;
 
 	public boolean agregar(VentaEntity obj) {
 		if(obj!= null){
@@ -42,7 +41,7 @@ public class VentaServicio implements IVentaServicio {
 	public VentaEntity obtener(long id) {
 		if(id != 0){
 			try{
-				return ventaDao.get(id);
+				return ventaDao.load((int)id);
 			}catch (Exception e) {
 			}
 		}
@@ -53,7 +52,7 @@ public class VentaServicio implements IVentaServicio {
 	public boolean actualizar(VentaEntity obj) {
 		if(obj!= null){
 			try {
-				ventaDao.update(obj);
+				ventaDao.save(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -64,7 +63,7 @@ public class VentaServicio implements IVentaServicio {
 	
 	public List<VentaEntity> obtenerTodos() {		
 		try {
-			return ventaDao.getAll();
+			return ventaDao.loadAll();
 		} catch (Exception e) {
 		}
 		return null;

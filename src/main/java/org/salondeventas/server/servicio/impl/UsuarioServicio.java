@@ -1,10 +1,9 @@
 package org.salondeventas.server.servicio.impl;
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.salondeventas.server.dao.IUsuarioDAO;
+
 import org.salondeventas.server.modelo.jpa.UsuarioEntity;
+import org.salondeventas.server.persistence.services.UsuarioPersistence;
 import org.salondeventas.server.servicio.IUsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class UsuarioServicio implements IUsuarioServicio {
 	
 	@Autowired
-	private IUsuarioDAO usuarioDao;
+	private UsuarioPersistence usuarioDao;
 
 	public boolean agregar(UsuarioEntity obj) {
 		if(obj!= null){
@@ -42,7 +41,7 @@ public class UsuarioServicio implements IUsuarioServicio {
 	public UsuarioEntity obtener(long id) {
 		if(id != 0){
 			try{
-				return usuarioDao.get(id);
+				return usuarioDao.load((int)id);
 			}catch (Exception e) {
 			}
 		}
@@ -53,7 +52,7 @@ public class UsuarioServicio implements IUsuarioServicio {
 	public boolean actualizar(UsuarioEntity obj) {
 		if(obj!= null){
 			try {
-				usuarioDao.update(obj);
+				usuarioDao.save(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -64,9 +63,15 @@ public class UsuarioServicio implements IUsuarioServicio {
 	
 	public List<UsuarioEntity> obtenerTodos() {		
 		try {
-			return usuarioDao.getAll();
+			return usuarioDao.loadAll();
 		} catch (Exception e) {
 		}
 		return null;
+	}
+
+
+	public boolean comprobarUsuario(String usuario, String clave) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 }

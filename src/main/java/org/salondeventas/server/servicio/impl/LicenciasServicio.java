@@ -1,10 +1,9 @@
 package org.salondeventas.server.servicio.impl;
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.salondeventas.server.dao.ILicenciasDAO;
+
 import org.salondeventas.server.modelo.jpa.LicenciasEntity;
+import org.salondeventas.server.persistence.services.LicenciasPersistence;
 import org.salondeventas.server.servicio.ILicenciasServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class LicenciasServicio implements ILicenciasServicio {
 	
 	@Autowired
-	private ILicenciasDAO licenciasDao;
+	private LicenciasPersistence licenciasDao;
 
 	public boolean agregar(LicenciasEntity obj) {
 		if(obj!= null){
@@ -42,7 +41,7 @@ public class LicenciasServicio implements ILicenciasServicio {
 	public LicenciasEntity obtener(long id) {
 		if(id != 0){
 			try{
-				return licenciasDao.get(id);
+				return licenciasDao.load((int)id);
 			}catch (Exception e) {
 			}
 		}
@@ -53,7 +52,7 @@ public class LicenciasServicio implements ILicenciasServicio {
 	public boolean actualizar(LicenciasEntity obj) {
 		if(obj!= null){
 			try {
-				licenciasDao.update(obj);
+				licenciasDao.save(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -64,7 +63,7 @@ public class LicenciasServicio implements ILicenciasServicio {
 	
 	public List<LicenciasEntity> obtenerTodos() {		
 		try {
-			return licenciasDao.getAll();
+			return licenciasDao.loadAll();
 		} catch (Exception e) {
 		}
 		return null;

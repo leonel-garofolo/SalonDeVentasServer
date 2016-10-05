@@ -6,6 +6,7 @@ import org.salondeventas.server.modelo.jpa.UsuarioEntity;
 import org.salondeventas.server.servicio.IUsuarioServicio;
 import org.salondeventas.server.servicio.IUsuarioSeguridadServicio;
 import org.salondeventas.server.util.MensajesSistema;
+import org.salondeventas.server.util.ValidacionesGlobales;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Consumes;
@@ -27,6 +28,7 @@ public class UsuarioControlador implements IUsuarioControlador{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, UsuarioEntity entity) {
+		System.out.println("agregar");
 		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
 			boolean estado=  usuarioServicio.agregar(entity);
 			if(estado){
@@ -75,6 +77,7 @@ public class UsuarioControlador implements IUsuarioControlador{
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, UsuarioEntity entity) {
+		System.out.println("agregar");
 		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
 			boolean estado=  usuarioServicio.actualizar(entity);
 			if(estado){
@@ -90,8 +93,8 @@ public class UsuarioControlador implements IUsuarioControlador{
 	@Path("/obtenertodos/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<UsuarioEntity> obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
-		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
+	public List<UsuarioEntity> obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {		
+		if(ValidacionesGlobales.validarUsuario(usuario, clave) && usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
 			List<UsuarioEntity> usuarios=  usuarioServicio.obtenerTodos();
 			if(usuarios != null){
 				return usuarios;
