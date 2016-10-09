@@ -2,6 +2,7 @@ package ${target.javaPackageFromFolder($SRC)};
 
 import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
 
-public interface I${entity.name}Servicio extends IServicio<${entity.name}Entity, java.lang.Long>{
-	
+public interface ${entity.name}Service extends Service<${entity.name}Entity, java.lang.Long>{
+
+	public ${entity.name}Entity load($fn.argumentsListWithType( $entity.keyAttributes ));
 }

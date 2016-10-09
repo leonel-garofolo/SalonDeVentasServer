@@ -2,6 +2,6 @@ package ${target.javaPackageFromFolder($SRC)};
 
 import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
 
-public interface I${entity.name}Controlador extends IControlador<${entity.name}Entity, java.lang.Long>{
-	
+public interface ${entity.name}Controller extends Controller<${entity.name}Entity, java.lang.Integer>{
+	public ${entity.name}Entity load(String usuario, String clave, $fn.argumentsListWithType( $entity.keyAttributes ));
 }

@@ -1,25 +1,33 @@
 #set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+## ----------------------------------------------------------------------
+#if ( $entity.hasCompositePrimaryKey() )
+#set( $primaryKeyType = "${entity.name}EntityKey" )
+#else 
+#set( $primaryKeyType = $entity.keyAttributes[0].wrapperType )
+#end
+## ----------------------------------------------------------------------
+
 package ${target.javaPackageFromFolder($SRC)};
 
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import ${ROOT_PKG}.dao.I${entity.name}DAO;
+import ${ROOT_PKG}.services.persistence.${entity.name}Persistence;
 import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
-import ${ROOT_PKG}.servicio.I${entity.name}Servicio;
+import ${ROOT_PKG}.services.${entity.name}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("${uncapitalizedEntityName}Servicio")
-public class ${entity.name}Servicio implements I${entity.name}Servicio {
+@Service("${uncapitalizedEntityName}Service")
+public class ${entity.name}ServiceImpl implements ${entity.name}Service {
 	
 	@Autowired
-	private I${entity.name}DAO ${uncapitalizedEntityName}Dao;
+	private ${entity.name}Persistence ${uncapitalizedEntityName}Persistence;
 
-	public boolean agregar(${entity.name}Entity obj) {
+	public boolean insert(${entity.name}Entity obj) {
 		if(obj!= null){
 			try {
-				${uncapitalizedEntityName}Dao.save(obj);
+				${uncapitalizedEntityName}Persistence.insert(obj);
 			} catch (Exception e) {
 				return false;
 			}
@@ -27,45 +35,45 @@ public class ${entity.name}Servicio implements I${entity.name}Servicio {
 		return true;
 	}
 
-	
-	public boolean borrar(${entity.name}Entity obj) {
+	public boolean update(${entity.name}Entity obj) {
 		if(obj!= null){
 			try {
-				${uncapitalizedEntityName}Dao.delete(obj);
-			} catch (Exception e) {
-				return false;
-			}
-		}			
-		return true;
-	}
-
-	
-	public ${entity.name}Entity obtener(long id) {
-		if(id != 0){
-			try{
-				return ${uncapitalizedEntityName}Dao.get(id);
-			}catch (Exception e) {
-			}
-		}
-		return null;
-	}
-
-	
-	public boolean actualizar(${entity.name}Entity obj) {
-		if(obj!= null){
-			try {
-				${uncapitalizedEntityName}Dao.update(obj);
+				${uncapitalizedEntityName}Persistence.save(obj);
 			} catch (Exception e) {
 				return false;
 			}
 		}		
 		return true;		
 	}
-
 	
-	public List<${entity.name}Entity> obtenerTodos() {		
+	public boolean delete(${entity.name}Entity obj) {
+		if(obj!= null){
+			try {
+				${uncapitalizedEntityName}Persistence.delete(obj);
+			} catch (Exception e) {
+				return false;
+			}
+		}			
+		return true;
+	}	
+
+	public ${entity.name}Entity load($fn.argumentsListWithType( $entity.keyAttributes )) {
+		try{
+#if ( $entity.hasCompositePrimaryKey() )
+		// Build the composite key
+		$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
+			return ${uncapitalizedEntityName}Persistence.load(key);
+#else
+			return ${uncapitalizedEntityName}Persistence.load( $fn.argumentsList( $entity.keyAttributes ) );
+#end	
+		}catch (Exception e) {
+			return null;
+		}		
+	}
+	
+	public List<${entity.name}Entity> loadAll() {		
 		try {
-			return ${uncapitalizedEntityName}Dao.getAll();
+			return ${uncapitalizedEntityName}Persistence.loadAll();
 		} catch (Exception e) {
 		}
 		return null;

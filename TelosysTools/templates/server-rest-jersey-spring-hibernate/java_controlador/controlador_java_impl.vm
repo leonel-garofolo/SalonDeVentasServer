@@ -1,12 +1,20 @@
 #set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
 #set($toLowerCaseEntityName = $fn.toLowerCase(${entity.name}) )
+## ----------------------------------------------------------------------
+#if ( $entity.hasCompositePrimaryKey() )
+#set( $primaryKeyType = "${entity.name}EntityKey" )
+#else 
+#set( $primaryKeyType = $entity.keyAttributes[0].wrapperType )
+#end
+## ----------------------------------------------------------------------
+
 package ${target.javaPackageFromFolder($SRC)};
 
 import java.util.List;
-import ${ROOT_PKG}.controlador.I${entity.name}Controlador;
+import ${ROOT_PKG}.controlador.${entity.name}Controller;
 import ${ROOT_PKG}.modelo.jpa.${entity.name}Entity;
-import ${ROOT_PKG}.servicio.I${entity.name}Servicio;
-import ${ROOT_PKG}.servicio.IUsuarioSeguridadServicio;
+import ${ROOT_PKG}.services.${entity.name}Service;
+import ${ROOT_PKG}.services.UsuarioSeguridadService;
 import ${ROOT_PKG}.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.ws.rs.QueryParam;
@@ -17,20 +25,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/${toLowerCaseEntityName}")
-public class ${entity.name}Controlador implements I${entity.name}Controlador{
+public class ${entity.name}ControllerImpl implements ${entity.name}Controller{
 	
 	@Autowired
-	protected I${entity.name}Servicio ${uncapitalizedEntityName}Servicio;	
+	protected ${entity.name}Service ${uncapitalizedEntityName}Service;	
 	@Autowired
-	protected IUsuarioSeguridadServicio usuarioSeguridadServicio;			
+	protected UsuarioSeguridadService usuarioSeguridadService;			
 			
 	@POST
-	@Path("/agregar/")
+	@Path("/insert/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String agregar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
-		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			boolean estado=  ${uncapitalizedEntityName}Servicio.agregar(entity);
+	public String insert(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+			boolean estado=  ${uncapitalizedEntityName}Service.insert(entity);
 			if(estado){
 				return MensajesSistema.OPERACION_OK;
 			}
@@ -39,14 +47,14 @@ public class ${entity.name}Controlador implements I${entity.name}Controlador{
 			return MensajesSistema.SERVER_ERROR;
 		}		
 	}
-	
+
 	@POST
-	@Path("/borrar/")
+	@Path("/update/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String borrar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
-		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			boolean estado=  ${uncapitalizedEntityName}Servicio.borrar(entity);
+	public String update(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+			boolean estado= ${uncapitalizedEntityName}Service.update(entity);
 			if(estado){
 				return MensajesSistema.OPERACION_OK;
 			}
@@ -55,14 +63,36 @@ public class ${entity.name}Controlador implements I${entity.name}Controlador{
 			return MensajesSistema.SERVER_ERROR;
 		}
 	}
-
+	
 	@POST
-	@Path("/obtener/")
+	@Path("/delete/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ${entity.name}Entity obtener(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, long id) {
-		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			${entity.name}Entity producto=  ${uncapitalizedEntityName}Servicio.obtener(id);
+	public String delete(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+			boolean estado=  ${uncapitalizedEntityName}Service.delete(entity);
+			if(estado){
+				return MensajesSistema.OPERACION_OK;
+			}
+			return MensajesSistema.OPERACION_ERROR;
+		}else{
+			return MensajesSistema.SERVER_ERROR;
+		}
+	}	
+
+	@POST
+	@Path("/load/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ${entity.name}Entity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") $fn.argumentsListWithType( $entity.keyAttributes )) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+		#if ( $entity.hasCompositePrimaryKey() )
+			// Build the composite key
+			$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
+			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(key);		
+#else
+			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load($fn.argumentsList( $entity.keyAttributes ));		
+#end
 			if(producto != null){
 				return producto;
 			}
@@ -73,28 +103,12 @@ public class ${entity.name}Controlador implements I${entity.name}Controlador{
 	}
 
 	@POST
-	@Path("/actualizar/")
+	@Path("/loadall/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public String actualizar(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
-		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			boolean estado=  ${uncapitalizedEntityName}Servicio.actualizar(entity);
-			if(estado){
-				return MensajesSistema.OPERACION_OK;
-			}
-			return MensajesSistema.OPERACION_ERROR;
-		}else{
-			return MensajesSistema.SERVER_ERROR;
-		}
-	}
-
-	@POST
-	@Path("/obtenertodos/")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<${entity.name}Entity> obtenerTodos(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
-		if(usuarioSeguridadServicio.comprobarUsuario(usuario, clave)){
-			List<${entity.name}Entity> ${uncapitalizedEntityName}s=  ${uncapitalizedEntityName}Servicio.obtenerTodos();
+	public List<${entity.name}Entity> loadAll(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+			List<${entity.name}Entity> ${uncapitalizedEntityName}s=  ${uncapitalizedEntityName}Service.loadAll();
 			if(${uncapitalizedEntityName}s != null){
 				return ${uncapitalizedEntityName}s;
 			}

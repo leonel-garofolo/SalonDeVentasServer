@@ -28,8 +28,8 @@ import $import;
 
 import ${ENTITY_PKG}.jpa.${entity.name}Entity;
 import ${ROOT_PKG}.mock.$entityMockClass;
-import ${ROOT_PKG}.persistence.PersistenceServiceProvider;
-import ${ROOT_PKG}.persistence.services.$entityPersistenceClass;
+import ${ROOT_PKG}.services.persistence.PersistenceServiceProvider;
+import ${ROOT_PKG}.services.persistence.services.$entityPersistenceClass;
 
 import org.junit.Assert;
 import org.junit.Test;

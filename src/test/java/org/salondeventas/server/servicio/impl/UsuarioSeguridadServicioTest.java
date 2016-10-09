@@ -20,15 +20,15 @@ public class UsuarioSeguridadServicioTest {
 
      // this bean will be injected into the OrderServiceTest class
      @Bean
-     public UsuarioSeguridadServicio orderService() {
-    	 UsuarioSeguridadServicio orderService = new UsuarioSeguridadServicio();
+     public UsuarioSeguridadService orderService() {
+    	 UsuarioSeguridadService orderService = new UsuarioSeguridadService();
          // set properties, etc.
          return orderService;
      }
  }
 
  @Autowired
- private UsuarioSeguridadServicio orderService;
+ private UsuarioSeguridadService orderService;
 
  @Test
  public void testOrderService() {
