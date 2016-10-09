@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.salondeventas.server.controlador.PrecioproductoController;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,13 +24,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class PrecioProductoControladorTest extends JerseyTest {
 	
-	private PrecioproductoControlador precioproductoControlador;
+	private PrecioproductoController precioproductoControlador;
 			
 	@Override
 	protected Application configure() {
-		precioproductoControlador = Mockito.mock(PrecioproductoControlador.class);
+		precioproductoControlador = Mockito.mock(PrecioproductoController.class);
 		ResourceConfig app = new ResourceConfig();
-		app.register(PrecioproductoControlador.class);
+		app.register(PrecioproductoController.class);
 		return app;
 	}	
 

@@ -12,13 +12,13 @@
   "java.sql.Time"        : "nextSqlTime()", 
   "java.sql.Timestamp"   : "nextSqlTimestamp()"
 } )
-#set( $package = ${target.javaPackageFromFolder($SRC)} )
+#set( $package = ${target.javaPackageFromFolder($TEST_SRC)} )
 ## ------------------------------------------------------------------
 #macro( mockMethod $field )
 #if ( $field.type == "String" )
 #set ( $methodName = "nextString($field.databaseSize)" )
 #else
-#set ( $methodName = $map.get(${field.fullType}) )
+#set ( $methodName = $map.get( ${field.fullType}) )
 #end
 ${methodName}#end
 ##--------------------------------------------------------------------------------------------------------

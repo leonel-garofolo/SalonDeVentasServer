@@ -2,9 +2,6 @@ package org.salondeventas.server.controlador.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
@@ -18,8 +15,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.salondeventas.server.controlador.EmpresaController;
 import org.salondeventas.server.modelo.jpa.EmpresaEntity;
-import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmpresaControladorTest extends JerseyTest{
@@ -34,12 +31,12 @@ public class EmpresaControladorTest extends JerseyTest{
 	 * The handler used in the {@link SetResource}. We are going to use {@link Mockito} to mock this handler for some
 	 * tests, to just check the API call itself.
 	 */
-	private EmpresaControlador empresaControlador;
+	private EmpresaController empresaController;
 
 	@Override
 	protected Application configure() {
-		empresaControlador = Mockito.mock(EmpresaControlador.class);
-		return new ResourceConfig(EmpresaControlador.class);
+		empresaController = Mockito.mock(EmpresaController.class);
+		return new ResourceConfig(EmpresaController.class);
 	}
 
 	@Override
@@ -53,7 +50,7 @@ public class EmpresaControladorTest extends JerseyTest{
 		/*
 		 * Reset the mocking on this object so that the field can be safely re-used between tests.
 		 */
-		Mockito.reset(empresaControlador);
+		Mockito.reset(empresaController);
 	}
 
 	@Test

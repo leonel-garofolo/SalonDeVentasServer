@@ -16,6 +16,8 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.salondeventas.server.controlador.PrecioproductoController;
+import org.salondeventas.server.controlador.ProductoController;
 import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
 import org.salondeventas.server.modelo.jpa.ProductoEntity;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,15 +30,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class ProductoControladorTest extends JerseyTest {
 	
-	private ProductoControlador productoControlador;
-	private PrecioproductoControlador precioproductoControlador;
+	private ProductoController productoControlador;
+	private PrecioproductoController precioproductoControlador;
 			
 	@Override
 	protected Application configure() {
-		productoControlador = Mockito.mock(ProductoControlador.class);
-		precioproductoControlador = Mockito.mock(PrecioproductoControlador.class);
-		ResourceConfig app = new ResourceConfig(ProductoControlador.class);
-		app.register(PrecioproductoControlador.class);
+		productoControlador = Mockito.mock(ProductoController.class);
+		precioproductoControlador = Mockito.mock(PrecioproductoController.class);
+		ResourceConfig app = new ResourceConfig(ProductoController.class);
+		app.register(PrecioproductoController.class);
 		return app;
 	}	
 

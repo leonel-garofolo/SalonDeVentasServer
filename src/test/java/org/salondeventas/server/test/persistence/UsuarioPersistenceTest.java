@@ -5,49 +5,49 @@
 package org.salondeventas.server.test.persistence;
 
 
-import org.salondeventas.server.modelo.jpa.ProductoEntity;
-import org.salondeventas.server.mock.ProductoEntityMock;
+import org.salondeventas.server.modelo.jpa.UsuarioEntity;
+import org.salondeventas.server.mock.UsuarioEntityMock;
 import org.salondeventas.server.services.persistence.commons.jpa.PersistenceServiceProvider;
-import org.salondeventas.server.services.persistence.ProductoPersistence;
+import org.salondeventas.server.services.persistence.UsuarioPersistence;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * JUnit test case for Producto persistence service
+ * JUnit test case for Usuario persistence service
  * 
  * @author Telosys Tools Generator
  *
  */
-public class ProductoPersistenceTest 
+public class UsuarioPersistenceTest 
 {
 	@Test
 	public void test1() {
 		
 		System.out.println("Test count ..." );
 		
-		ProductoPersistence service = PersistenceServiceProvider.getService(ProductoPersistence.class);
+		UsuarioPersistence service = PersistenceServiceProvider.getService(UsuarioPersistence.class);
 		System.out.println("CountAll = " + service.countAll() );
 	}
 	
 	@Test
 	public void test2() {
 		
-		System.out.println("Test Producto persistence : delete + load ..." );
+		System.out.println("Test Usuario persistence : delete + load ..." );
 		
-		ProductoPersistence service = PersistenceServiceProvider.getService(ProductoPersistence.class);
+		UsuarioPersistence service = PersistenceServiceProvider.getService(UsuarioPersistence.class);
 		
-		ProductoEntityMock mock = new ProductoEntityMock();
+		UsuarioEntityMock mock = new UsuarioEntityMock();
 		
 		// TODO : set primary key values here 
 		process( service, mock, 0  );
 		// process( service, mock, ... );
 	}
 
-	private void process(ProductoPersistence service, ProductoEntityMock mock, Integer idproducto ) {
+	private void process(UsuarioPersistence service, UsuarioEntityMock mock, Integer idusuario ) {
 		System.out.println("----- "  );
 		System.out.println(" . load : " );
-		ProductoEntity entity = service.load( idproducto );
+		UsuarioEntity entity = service.load( idusuario );
 		if ( entity != null ) {
 			// Found 
 			System.out.println("   FOUND : " + entity );
@@ -61,7 +61,7 @@ public class ProductoPersistenceTest
 			// Not found 
 			System.out.println("   NOT FOUND" );
 			// Create a new instance 
-			entity = mock.createInstance( idproducto ) ;
+			entity = mock.createInstance( idusuario ) ;
 			Assert.assertNotNull(entity);
 
 			// No reference : insert is possible 
@@ -71,7 +71,7 @@ public class ProductoPersistenceTest
 			System.out.println("   inserted : " + entity );
 
 			System.out.println(" . delete : " );
-			boolean deleted = service.delete( idproducto );
+			boolean deleted = service.delete( idusuario );
 			System.out.println("   deleted = " + deleted);
 			Assert.assertTrue(deleted) ;
 		}		
