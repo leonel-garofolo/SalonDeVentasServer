@@ -30,15 +30,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 public class ProductoControladorTest extends JerseyTest {
 	
-	private ProductoController productoControlador;
-	private PrecioproductoController precioproductoControlador;
+	private ProductoControllerImpl productoControlador;
+	private PrecioproductoControllerImpl precioproductoControlador;
 			
 	@Override
 	protected Application configure() {
-		productoControlador = Mockito.mock(ProductoController.class);
-		precioproductoControlador = Mockito.mock(PrecioproductoController.class);
-		ResourceConfig app = new ResourceConfig(ProductoController.class);
-		app.register(PrecioproductoController.class);
+		productoControlador = Mockito.mock(ProductoControllerImpl.class);
+		precioproductoControlador = Mockito.mock(PrecioproductoControllerImpl.class);
+		ResourceConfig app = new ResourceConfig(ProductoControllerImpl.class);
+		app.register(PrecioproductoControllerImpl.class);
 		return app;
 	}	
 
@@ -49,7 +49,7 @@ public class ProductoControladorTest extends JerseyTest {
     
 	@Test
 	public void addProducto() {
-		String pathToCall = "producto/agregar/";
+		String pathToCall = "producto/insert/";
 
 		final ProductoEntity prod1 = new ProductoEntity();
 		prod1.setNombre("Producto 3");
@@ -67,7 +67,7 @@ public class ProductoControladorTest extends JerseyTest {
 		precio.setFecha(new Date());
 		precio.setImporte(new BigDecimal("13.5"));
 		
-		pathToCall = "precioproducto/agregar/";
+		pathToCall = "precioproducto/insert/";
 		final Entity<PrecioproductoEntity> precioEntity = Entity.entity(precio, MediaType.APPLICATION_JSON_TYPE);						
 		final Response responseWrapperPrecio = target(pathToCall)				
 				.queryParam("usuario", "leonel")
@@ -81,7 +81,7 @@ public class ProductoControladorTest extends JerseyTest {
 	
 	@Test
 	public void actualizarProducto() {
-		String pathToCall = "producto/actualizar/";
+		String pathToCall = "producto/update/";
 
 		final ProductoEntity prod1 = new ProductoEntity();
 		prod1.setIdproducto(70);

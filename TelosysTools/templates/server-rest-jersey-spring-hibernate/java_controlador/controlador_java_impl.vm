@@ -40,7 +40,7 @@ public class ${entity.name}ControllerImpl implements ${entity.name}Controller{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  ${uncapitalizedEntityName}Service.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getId${toLowerCaseEntityName}());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{

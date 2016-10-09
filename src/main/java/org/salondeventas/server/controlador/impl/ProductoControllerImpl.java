@@ -31,7 +31,7 @@ public class ProductoControllerImpl implements ProductoController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  productoService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getIdproducto());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{

@@ -2,6 +2,14 @@
 package org.salondeventas.server.controlador.impl;
 
 import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
 import org.salondeventas.server.controlador.PrecioproductoController;
 import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
 import org.salondeventas.server.modelo.jpa.PrecioproductoEntityKey;
@@ -9,12 +17,6 @@ import org.salondeventas.server.services.PrecioproductoService;
 import org.salondeventas.server.services.UsuarioSeguridadService;
 import org.salondeventas.server.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 @Path("/precioproducto")
 public class PrecioproductoControllerImpl implements PrecioproductoController{
@@ -32,7 +34,7 @@ public class PrecioproductoControllerImpl implements PrecioproductoController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  precioproductoService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getIdprecioproducto());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{
@@ -76,7 +78,7 @@ public class PrecioproductoControllerImpl implements PrecioproductoController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public PrecioproductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") Integer idprecioproducto, Integer idproducto) {
+	public PrecioproductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("idprecioproducto") Integer idprecioproducto, @QueryParam("idproducto") Integer idproducto) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 					// Build the composite key
 			PrecioproductoEntityKey key = new PrecioproductoEntityKey( idprecioproducto, idproducto );

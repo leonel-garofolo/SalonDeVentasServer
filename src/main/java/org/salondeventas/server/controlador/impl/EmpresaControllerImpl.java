@@ -31,7 +31,7 @@ public class EmpresaControllerImpl implements EmpresaController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  empresaService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getIdempresa());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{

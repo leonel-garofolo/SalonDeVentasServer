@@ -31,7 +31,7 @@ public class LicenciasControllerImpl implements LicenciasController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  licenciasService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getNumero());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{

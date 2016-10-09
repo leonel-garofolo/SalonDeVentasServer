@@ -31,7 +31,7 @@ public class VentaControllerImpl implements VentaController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  ventaService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getIdventa());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{

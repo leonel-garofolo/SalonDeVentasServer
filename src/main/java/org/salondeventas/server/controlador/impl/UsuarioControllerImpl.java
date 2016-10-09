@@ -31,7 +31,7 @@ public class UsuarioControllerImpl implements UsuarioController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  usuarioService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getIdusuario());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{

@@ -2,6 +2,14 @@
 package org.salondeventas.server.controlador.impl;
 
 import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
 import org.salondeventas.server.controlador.LineadeventaController;
 import org.salondeventas.server.modelo.jpa.LineadeventaEntity;
 import org.salondeventas.server.modelo.jpa.LineadeventaEntityKey;
@@ -9,12 +17,6 @@ import org.salondeventas.server.services.LineadeventaService;
 import org.salondeventas.server.services.UsuarioSeguridadService;
 import org.salondeventas.server.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 @Path("/lineadeventa")
 public class LineadeventaControllerImpl implements LineadeventaController{
@@ -32,7 +34,7 @@ public class LineadeventaControllerImpl implements LineadeventaController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  lineadeventaService.insert(entity);
 			if(estado){
-				return MensajesSistema.OPERACION_OK;
+				return String.valueOf(entity.getIdlineadeventa());
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{
@@ -76,7 +78,7 @@ public class LineadeventaControllerImpl implements LineadeventaController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public LineadeventaEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") Integer idlineadeventa, Integer idproducto, Integer idventa) {
+	public LineadeventaEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("idlineadeventa") Integer idlineadeventa, @QueryParam("idproducto") Integer idproducto, @QueryParam("idventa") Integer idventa) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 					// Build the composite key
 			LineadeventaEntityKey key = new LineadeventaEntityKey( idlineadeventa, idproducto, idventa );
