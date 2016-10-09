@@ -93,7 +93,9 @@ $jpa.fieldAnnotations(4, $field)
 	#if($field.isNotNull()) 
 	@NotNull
 	#end
-	@Size(min=0, max=$field.maxLength)	
+	#if($field.isStringType())
+	@Size(max = $field.maxLength)
+	#end	
     private $field.formattedType(10) $field.formattedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
 #end

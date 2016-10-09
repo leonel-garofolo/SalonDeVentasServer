@@ -75,9 +75,9 @@ public class UsuarioControllerImpl implements UsuarioController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public UsuarioEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") Integer idusuario) {
+	public UsuarioEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, UsuarioEntity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
-					UsuarioEntity producto= usuarioService.load(idusuario);		
+			UsuarioEntity producto= usuarioService.load(entity.getIdusuario());		
 			if(producto != null){
 				return producto;
 			}

@@ -75,9 +75,9 @@ public class VentaControllerImpl implements VentaController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public VentaEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") Integer idventa) {
+	public VentaEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, VentaEntity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
-					VentaEntity producto= ventaService.load(idventa);		
+					VentaEntity producto= ventaService.load(entity.getIdventa());		
 			if(producto != null){
 				return producto;
 			}

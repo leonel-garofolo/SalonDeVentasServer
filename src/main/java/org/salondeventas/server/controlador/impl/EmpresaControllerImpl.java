@@ -75,9 +75,9 @@ public class EmpresaControllerImpl implements EmpresaController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public EmpresaEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") Integer idempresa) {
+	public EmpresaEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, EmpresaEntity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
-					EmpresaEntity producto= empresaService.load(idempresa);		
+					EmpresaEntity producto= empresaService.load(entity.getIdempresa());		
 			if(producto != null){
 				return producto;
 			}

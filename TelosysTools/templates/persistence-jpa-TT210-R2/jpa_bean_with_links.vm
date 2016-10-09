@@ -90,6 +90,12 @@ $jpa.fieldAnnotations(4, $field)
 ##     // "$field.name" (column "$field.databaseName") is not mapped as an attribute because it is used in a link   
 ##     
 ## #end
+	#if($field.isNotNull())
+	@NotNull
+	#end
+	#if($field.isStringType())
+	@Size(max = $field.maxLength)
+	#end
 $jpa.fieldAnnotations(4, $field)
     private $field.formattedType(10) $field.formattedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
 

@@ -84,14 +84,14 @@ public class ${entity.name}ControllerImpl implements ${entity.name}Controller{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ${entity.name}Entity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("id") $fn.argumentsListWithType( $entity.keyAttributes )) {
+	public ${entity.name}Entity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 		#if ( $entity.hasCompositePrimaryKey() )
 			// Build the composite key
 			$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
 			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(key);		
 #else
-			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load($fn.argumentsList( $entity.keyAttributes ));		
+			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(entity.getId${uncapitalizedEntityName}());		
 #end
 			if(producto != null){
 				return producto;

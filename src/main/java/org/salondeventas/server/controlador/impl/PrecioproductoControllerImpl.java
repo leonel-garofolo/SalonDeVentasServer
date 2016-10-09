@@ -78,10 +78,10 @@ public class PrecioproductoControllerImpl implements PrecioproductoController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public PrecioproductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, @QueryParam("idprecioproducto") Integer idprecioproducto, @QueryParam("idproducto") Integer idproducto) {
+	public PrecioproductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, PrecioproductoEntity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 					// Build the composite key
-			PrecioproductoEntityKey key = new PrecioproductoEntityKey( idprecioproducto, idproducto );
+			PrecioproductoEntityKey key = new PrecioproductoEntityKey( entity.getIdprecioproducto(), entity.getIdproducto());
 			PrecioproductoEntity producto= precioproductoService.load(key);		
 			if(producto != null){
 				return producto;

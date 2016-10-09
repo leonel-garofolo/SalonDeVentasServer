@@ -52,6 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		try{
 			return usuarioPersistence.load( idusuario );
 		}catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}		
 	}
