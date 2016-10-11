@@ -1,0 +1,29 @@
+Update date : Tue Oct 11 14:57:13 ART 2016
+ 
+ Table 'empresa' found in repository
+ (=) table 'empresa' unchanged
+ 
+ Table 'licencias' found in repository
+ (=) table 'licencias' unchanged
+ 
+ Table 'lineadeventa' found in repository
+ (=) table 'lineadeventa' unchanged
+ 
+ Table 'precioproducto' found in repository
+ (=) table 'precioproducto' unchanged
+ 
+ Table 'producto' found in repository
+ . Column 'codBarras' added
+ (*) table 'producto' updated : 1 change(s)
+ 
+ Table 'usuario' found in repository
+ (=) table 'usuario' unchanged
+ 
+ Table 'venta' found in repository
+ (=) table 'venta' unchanged
+ 
+ Table 'v_usuarios' found in repository
+ (=) table 'v_usuarios' unchanged
+ 
+ Table 'vproductos' found in repository
+ (=) table 'vproductos' unchanged

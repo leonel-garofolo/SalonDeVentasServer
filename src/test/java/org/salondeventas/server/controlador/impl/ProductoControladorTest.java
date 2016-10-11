@@ -16,8 +16,6 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.salondeventas.server.controlador.PrecioproductoController;
-import org.salondeventas.server.controlador.ProductoController;
 import org.salondeventas.server.modelo.jpa.PrecioproductoEntity;
 import org.salondeventas.server.modelo.jpa.ProductoEntity;
 import org.springframework.test.context.ContextConfiguration;
@@ -52,8 +50,9 @@ public class ProductoControladorTest extends JerseyTest {
 		String pathToCall = "producto/insert/";
 
 		final ProductoEntity prod1 = new ProductoEntity();
-		prod1.setNombre("Producto 3");
-		prod1.setDetalle("producto de prueba");				
+		prod1.setNombre("Producto barras");
+		prod1.setDetalle("producto de prueba");	
+		prod1.setCodbarras("000015868451685");
 		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapper = target(pathToCall)				
 				.queryParam("usuario", "leonel")
@@ -94,28 +93,28 @@ public class ProductoControladorTest extends JerseyTest {
 				.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());		
 	}	
-	/*
-	@Test
-	public void getPoducto() {
-		final String pathToCall = "producto/obtener/";
 
-		final Entity<Long> prodEntity = Entity.entity((long)1, MediaType.APPLICATION_JSON_TYPE);				
+	@Test
+	public void loadPoducto() {
+		final String pathToCall = "producto/load/";
+		final ProductoEntity prod1 = new ProductoEntity();
+		prod1.setIdproducto(70);
+		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapper = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
 				.queryParam("id", "1")
-				.request(MediaType.APPLICATION_JSON_TYPE).get();				
+				.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
 	}	
-	
-		
+			
 	@Test
-	public void getAll() {
-		final String pathToCall = "producto/obtenertodosjson/";
+	public void loadAll() {
+		final String pathToCall = "producto/loadall/";
 
 		final ProductoEntity prod1 = new ProductoEntity();		
 		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
-		try{
+		
 			final Response responseWrapper = target(pathToCall)				
 					.queryParam("usuario", "leonel")
 					.queryParam("clave", "123")
@@ -123,11 +122,23 @@ public class ProductoControladorTest extends JerseyTest {
 			String content = responseWrapper.toString();
 	        System.out.println("Output : " + content);
 			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-		}catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			System.out.println("Error");
-			
-		}				
-	}	
-	*/
+					
+	}		
+	
+	@Test
+	public void loadAllView() {
+		final String pathToCall = "producto/loadallview/";
+
+		final ProductoEntity prod1 = new ProductoEntity();		
+		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
+		
+			final Response responseWrapper = target(pathToCall)				
+					.queryParam("usuario", "leonel")
+					.queryParam("clave", "123")
+					.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);
+			String content = responseWrapper.toString();
+	        System.out.println("Output : " + content);
+			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
+					
+	}		
 }
