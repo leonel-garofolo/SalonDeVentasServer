@@ -56,6 +56,6 @@ public class VproductosControladorTest extends JerseyTest {
 			String content = responseWrapper.toString();
 	        System.out.println("Output : " + content);
 			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-					
+		System.out.println(responseWrapper.readEntity(String.class));			
 	}		
 }

@@ -7,12 +7,23 @@
 package org.salondeventas.server.modelo.jpa;
 
 import java.io.Serializable;
-import javax.validation.constraints.* ;
-//import org.hibernate.validator.constraints.* ;
-
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+//import org.hibernate.validator.constraints.* ;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Persistent class for entity stored in table "producto"
@@ -52,7 +63,7 @@ public class ProductoEntity implements Serializable {
 	    private String     nombre       ;
 
     @Column(name="codBarras", length=90)
-			@Size(max = 90)
+		//	@Size(max = 90)
 	    private String     codbarras    ;
 
 
@@ -60,9 +71,11 @@ public class ProductoEntity implements Serializable {
     //----------------------------------------------------------------------
     // ENTITY LINKS ( RELATIONSHIP )
     //----------------------------------------------------------------------
+    @JsonIgnore
     @OneToMany(mappedBy="producto", targetEntity=PrecioproductoEntity.class)
     private List<PrecioproductoEntity> listOfPrecioproducto;
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy="producto", targetEntity=LineadeventaEntity.class)
     private List<LineadeventaEntity> listOfLineadeventa;
 

@@ -2,18 +2,23 @@
 package org.salondeventas.server.controlador.impl;
 
 import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
 import org.salondeventas.server.controlador.ProductoController;
 import org.salondeventas.server.modelo.jpa.ProductoEntity;
 import org.salondeventas.server.services.ProductoService;
 import org.salondeventas.server.services.UsuarioSeguridadService;
 import org.salondeventas.server.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Path("/producto")
 public class ProductoControllerImpl implements ProductoController{
@@ -75,10 +80,10 @@ public class ProductoControllerImpl implements ProductoController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ProductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ProductoEntity entity) {
+	public ProductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ProductoEntity entity) throws Exception {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 					ProductoEntity producto= productoService.load(entity.getIdproducto());		
-			if(producto != null){
+			if(producto != null){					
 				return producto;
 			}
 			return null;
