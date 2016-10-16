@@ -44,7 +44,6 @@ public class ProductoControladorTest extends JerseyTest {
 
 		final ProductoEntity prod1 = new ProductoEntity();
 		prod1.setNombre("Producto barras");
-		prod1.setDetalle("producto de prueba");	
 		prod1.setCodbarras("000015868451685");
 		prod1.setPrecio(new BigDecimal(15.3));
 		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);				
@@ -64,7 +63,6 @@ public class ProductoControladorTest extends JerseyTest {
 		final ProductoEntity prod1 = new ProductoEntity();
 		prod1.setIdproducto(70);
 		prod1.setNombre("Producto 3-4-5");
-		prod1.setDetalle("producto de prueba");				
 		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapper = target(pathToCall)				
 				.queryParam("usuario", "leonel")
@@ -86,21 +84,16 @@ public class ProductoControladorTest extends JerseyTest {
 		System.out.println(responseWrapper.readEntity(String.class));
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
 	}	
-	/*		
+	
 	@Test
 	public void loadAll() {
-		final String pathToCall = "producto/loadall/";
-
-		final ProductoEntity prod1 = new ProductoEntity();		
-		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
-		
-			final Response responseWrapper = target(pathToCall)				
-					.queryParam("usuario", "leonel")
-					.queryParam("clave", "123")
-					.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);
-			String content = responseWrapper.toString();
-	        System.out.println("Output : " + content);
-			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());					
+		final String pathToCall = "producto/loadall/";		
+		final Response responseWrapper = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(null);
+		String content = responseWrapper.toString();        
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());					
 	}	
-	*/		
+	
 }

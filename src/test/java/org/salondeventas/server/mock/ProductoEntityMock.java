@@ -35,7 +35,6 @@ public class ProductoEntityMock {
 		// Init Primary Key fields
 		entity.setIdproducto( idproducto) ;
 		// Init Data fields
-		entity.setDetalle( mockValues.nextString(255) ) ; // java.lang.String 
 		entity.setNombre( mockValues.nextString(90) ) ; // java.lang.String 
 		// Init Link fields (if any)
 		// setListOfPrecioproducto( TODO ) ; // List<Precioproducto> 

@@ -94,7 +94,7 @@ public class VentaControllerImplTest extends JerseyTest {
 		final String pathToCall = "venta/load/";
 
 		final VentaEntity unVenta = new VentaEntity();	
-		unVenta.setIdventa(1);
+		unVenta.setIdventa(5);
 		final Entity<VentaEntity> ventaEntity = Entity.entity(unVenta, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapper = target(pathToCall)				
 				.queryParam("usuario", "leonel")
@@ -106,23 +106,11 @@ public class VentaControllerImplTest extends JerseyTest {
 		
 	@Test
 	public void loadAll() {
-		final String pathToCall = "producto/loadall/";
-		/*
-		final ProductoEntity prod1 = new ProductoEntity();		
-		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
-		try{
-			final Response responseWrapper = target(pathToCall)				
-					.queryParam("usuario", "leonel")
-					.queryParam("clave", "123")
-					.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);
-			String content = responseWrapper.toString();
-	        System.out.println("Output : " + content);
-			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-		}catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			System.out.println("Error");
-			
-		}
-		*/				
+		final String pathToCall = "venta/loadall/";
+		final Response responseWrapper = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")				
+				.request(MediaType.APPLICATION_JSON_TYPE).post(null);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());			
 	}		
 }

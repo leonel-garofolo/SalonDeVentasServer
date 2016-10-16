@@ -33,7 +33,7 @@ package ${target.javaPackageFromFolder($SRC)};
 
 import java.io.Serializable;
 
-//import javax.validation.constraints.* ;
+import javax.validation.constraints.*;
 //import org.hibernate.validator.constraints.* ;
 
 #foreach( $import in $java.imports($entity) )
@@ -90,12 +90,12 @@ $jpa.fieldAnnotations(4, $field)
 ##     // "$field.name" (column "$field.databaseName") is not mapped as an attribute because it is used in a link   
 ##     
 ## #end
-	#if($field.isNotNull())
+#if($field.isNotNull())
 	@NotNull
-	#end
-	#if($field.isStringType())
+#end
+#if($field.isStringType())
 	@Size(max = $field.maxLength)
-	#end
+#end
 $jpa.fieldAnnotations(4, $field)
     private $field.formattedType(10) $field.formattedName(12) #if($field.hasInitialValue())= ${field.initialValue} #end;
 
