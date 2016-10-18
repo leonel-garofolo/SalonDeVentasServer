@@ -2,18 +2,23 @@
 package org.salondeventas.server.controlador.impl;
 
 import java.util.List;
-import org.salondeventas.server.controlador.VentaController;
-import org.salondeventas.server.modelo.jpa.VentaEntity;
-import org.salondeventas.server.services.VentaService;
-import org.salondeventas.server.services.UsuarioSeguridadService;
-import org.salondeventas.server.util.MensajesSistema;
-import org.springframework.beans.factory.annotation.Autowired;
-import javax.ws.rs.QueryParam;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
+import org.salondeventas.server.controlador.VentaController;
+import org.salondeventas.server.modelo.jpa.VentaEntity;
+import org.salondeventas.server.services.UsuarioSeguridadService;
+import org.salondeventas.server.services.VentaService;
+import org.salondeventas.server.util.MensajesSistema;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Path("/venta")
 public class VentaControllerImpl implements VentaController{
@@ -79,6 +84,14 @@ public class VentaControllerImpl implements VentaController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 					VentaEntity producto= ventaService.load(entity.getIdventa());		
 			if(producto != null){
+				MyObjectMapperProvider manager = new MyObjectMapperProvider();
+				ObjectMapper mapper = manager.createCombinedObjectMapper();
+				try {
+					System.out.println(mapper.writeValueAsString(producto));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return producto;
 			}
 			return null;
@@ -95,6 +108,14 @@ public class VentaControllerImpl implements VentaController{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			List<VentaEntity> ventas=  ventaService.loadAll();
 			if(ventas != null){
+				MyObjectMapperProvider manager = new MyObjectMapperProvider();
+				ObjectMapper mapper = manager.createCombinedObjectMapper();
+				try {
+					System.out.println(mapper.writeValueAsString(ventas));
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return ventas;
 			}
 			return null;

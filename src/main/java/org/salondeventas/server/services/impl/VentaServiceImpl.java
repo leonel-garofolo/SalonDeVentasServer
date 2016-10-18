@@ -2,11 +2,10 @@
 package org.salondeventas.server.services.impl;
 
 import java.util.List;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.salondeventas.server.services.persistence.VentaPersistence;
+
 import org.salondeventas.server.modelo.jpa.VentaEntity;
 import org.salondeventas.server.services.VentaService;
+import org.salondeventas.server.services.persistence.VentaPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,7 @@ public class VentaServiceImpl implements VentaService {
 			try {
 				ventaPersistence.insert(obj);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 		}
@@ -32,6 +32,7 @@ public class VentaServiceImpl implements VentaService {
 			try {
 				ventaPersistence.save(obj);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 		}		
@@ -43,6 +44,7 @@ public class VentaServiceImpl implements VentaService {
 			try {
 				ventaPersistence.delete(obj);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 		}			
@@ -53,6 +55,7 @@ public class VentaServiceImpl implements VentaService {
 		try{
 			return ventaPersistence.load( idventa );
 		}catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}		
 	}
@@ -61,6 +64,7 @@ public class VentaServiceImpl implements VentaService {
 		try {
 			return ventaPersistence.loadAll();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

@@ -29,6 +29,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * Persistent class for entity stored in table "venta"
  *
@@ -74,8 +77,8 @@ public class VentaEntity implements Serializable {
 
     //----------------------------------------------------------------------
     // ENTITY LINKS ( RELATIONSHIP )
-    //----------------------------------------------------------------------
-    @OneToMany(fetch = FetchType.EAGER,mappedBy="venta", targetEntity=LineadeventaEntity.class)
+    //---------------------------------------------------------------------- 
+    @OneToMany(fetch= FetchType.EAGER, mappedBy="venta", targetEntity=LineadeventaEntity.class)
     private List<LineadeventaEntity> listOfLineadeventa;
 
 

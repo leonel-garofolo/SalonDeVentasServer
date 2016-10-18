@@ -23,8 +23,7 @@ public class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
     final ObjectMapper combinedObjectMapper;
 
     public MyObjectMapperProvider() {
-    	System.out.println("MyObjectMapperProvider");
-        defaultObjectMapper = createDefaultMapper();
+    	defaultObjectMapper = createDefaultMapper();
         combinedObjectMapper = createCombinedObjectMapper();
     }
 
@@ -41,8 +40,7 @@ public class MyObjectMapperProvider implements ContextResolver<ObjectMapper> {
     }
 
     public static ObjectMapper createCombinedObjectMapper() {
-    	System.out.println("createCombinedObjectMapper");
-        return new ObjectMapper()
+    	return new ObjectMapper()
                 .configure(SerializationFeature.WRAP_ROOT_VALUE, true)
                 .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true)
                 .setAnnotationIntrospector(createJaxbJacksonAnnotationIntrospector());

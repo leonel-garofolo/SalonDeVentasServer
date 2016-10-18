@@ -11,6 +11,10 @@ import java.io.Serializable;
 import javax.validation.constraints.*;
 //import org.hibernate.validator.constraints.* ;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -65,6 +69,7 @@ public class ProductoEntity implements Serializable {
     //----------------------------------------------------------------------
     // ENTITY LINKS ( RELATIONSHIP )
     //----------------------------------------------------------------------
+    @JsonIgnore
     @OneToMany(fetch= FetchType.EAGER,mappedBy="producto", targetEntity=LineadeventaEntity.class)
     private List<LineadeventaEntity> listOfLineadeventa;
 

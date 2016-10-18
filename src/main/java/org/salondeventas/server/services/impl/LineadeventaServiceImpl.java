@@ -21,6 +21,7 @@ public class LineadeventaServiceImpl implements LineadeventaService {
 			try {
 				lineadeventaPersistence.insert(obj);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 		}
@@ -32,6 +33,7 @@ public class LineadeventaServiceImpl implements LineadeventaService {
 			try {
 				lineadeventaPersistence.save(obj);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 		}		
@@ -43,6 +45,7 @@ public class LineadeventaServiceImpl implements LineadeventaService {
 			try {
 				lineadeventaPersistence.delete(obj);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return false;
 			}
 		}			
@@ -55,6 +58,7 @@ public class LineadeventaServiceImpl implements LineadeventaService {
 			LineadeventaEntityKey key = new LineadeventaEntityKey( idlineadeventa, idproducto, idventa );
 			return lineadeventaPersistence.load(key);
 		}catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}		
 	}
@@ -63,6 +67,7 @@ public class LineadeventaServiceImpl implements LineadeventaService {
 		try {
 			return lineadeventaPersistence.loadAll();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
