@@ -40,7 +40,13 @@ public class ${entity.name}ControllerImpl implements ${entity.name}Controller{
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			boolean estado=  ${uncapitalizedEntityName}Service.insert(entity);
 			if(estado){
-				return String.valueOf(entity.getId${toLowerCaseEntityName}());
+				return String.valueOf(
+#set( $size = $entity.keyAttributes.size() )
+#foreach( $field in $entity.keyAttributes )
+					entity.${field.getter}()#if($foreach.count < $size) + "," +#end
+	
+#end  
+			    );
 			}
 			return MensajesSistema.OPERACION_ERROR;
 		}else{
@@ -86,13 +92,13 @@ public class ${entity.name}ControllerImpl implements ${entity.name}Controller{
 	@Produces(MediaType.APPLICATION_JSON)
 	public ${entity.name}Entity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
-		#if ( $entity.hasCompositePrimaryKey() )
-			// Build the composite key
-			$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
-			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(key);		
-#else
-			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(entity.getId${uncapitalizedEntityName}());		
-#end
+			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(
+#set( $size = $entity.keyAttributes.size() )
+#foreach( $field in $entity.keyAttributes )
+				entity.${field.getter}()#if($foreach.count < $size),#end
+	
+#end  
+			);
 			if(producto != null){
 				return producto;
 			}

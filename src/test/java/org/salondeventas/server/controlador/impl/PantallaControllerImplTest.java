@@ -17,7 +17,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.salondeventas.server.modelo.jpa.UsuarioEntity;
+import org.salondeventas.server.modelo.jpa.PantallaEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -26,14 +26,14 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext.xml"})
 @WebAppConfiguration
-public class UsuarioControllerImplTest extends JerseyTest {
+public class PantallaControllerImplTest extends JerseyTest {
 	
-	private UsuarioControllerImpl usuarioControlador;
+	private PantallaControllerImpl pantallaControlador;
 			
 	@Override
 	protected Application configure() {
-		usuarioControlador = Mockito.mock(UsuarioControllerImpl.class);
-		ResourceConfig app = new ResourceConfig(UsuarioControllerImpl.class);
+		pantallaControlador = Mockito.mock(PantallaControllerImpl.class);
+		ResourceConfig app = new ResourceConfig(PantallaControllerImpl.class);
 		return app;
 	}	
 
@@ -43,65 +43,63 @@ public class UsuarioControllerImplTest extends JerseyTest {
     }
     
 	@Test
-	public void crudUsuario() {
-		String pathToCall = "usuario/insert/";
+	public void crudPantalla() {
+		String pathToCall = "pantalla/insert/";
 
 		//INSERT
-		final UsuarioEntity usuario = new UsuarioEntity();
+		final PantallaEntity pantalla = new PantallaEntity();
 		// Auto-incremented key : nothing to set in the Primary Key
 		//--- Other values
-		usuario.setNombre("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "nombre" : java.lang.String
-		usuario.setClave("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "clave" : java.lang.String
+		pantalla.setNombre("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "Nombre" : java.lang.String
 		
-		final Entity<UsuarioEntity> usuarioEntity = Entity.entity(usuario, MediaType.APPLICATION_JSON_TYPE);				
+		final Entity<PantallaEntity> pantallaEntity = Entity.entity(pantalla, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapperInsert = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(usuarioEntity);				
+				.request(MediaType.APPLICATION_JSON_TYPE).post(pantallaEntity);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperInsert.getStatus());
 		
     	//--- FIND
     	System.out.println("Find..." );
-		pathToCall = "usuario/load/";
-		final UsuarioEntity usuario2 = new UsuarioEntity();
-		usuario2.setIdusuario(usuario.getIdusuario());	
-		final Entity<UsuarioEntity> usuarioEntity2 = Entity.entity(usuario2, MediaType.APPLICATION_JSON_TYPE);				
+		pathToCall = "pantalla/load/";
+		final PantallaEntity pantalla2 = new PantallaEntity();
+		pantalla2.setIdpantalla(pantalla.getIdpantalla());	
+		final Entity<PantallaEntity> pantallaEntity2 = Entity.entity(pantalla2, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapperLoad = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")				
-				.request(MediaType.APPLICATION_JSON_TYPE).post(usuarioEntity2);				
+				.request(MediaType.APPLICATION_JSON_TYPE).post(pantallaEntity2);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoad.getStatus());		
-		UsuarioEntity usuario3 = responseWrapperLoad.readEntity(UsuarioEntity.class);		
+		PantallaEntity pantalla3 = responseWrapperLoad.readEntity(PantallaEntity.class);		
 
 		//--- UPDATE
-		pathToCall = "usuario/update/";		
+		pathToCall = "pantalla/update/";		
 		//--- Change values
-		usuario3.setNombre("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "nombre" : java.lang.String
-		usuario3.setClave("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "clave" : java.lang.String
+		pantalla3.setNombre("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "Nombre" : java.lang.String
 				
-		final Entity<UsuarioEntity> usuarioEntity3 = Entity.entity(usuario3, MediaType.APPLICATION_JSON_TYPE);										
+		final Entity<PantallaEntity> pantallaEntity3 = Entity.entity(pantalla3, MediaType.APPLICATION_JSON_TYPE);										
 		final Response responseWrapperUpdate = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(usuarioEntity3);				
+				.request(MediaType.APPLICATION_JSON_TYPE).post(pantallaEntity3);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperUpdate.getStatus());
 
 		//--- DELETE
-		pathToCall = "usuario/delete/";						
-		final Entity<UsuarioEntity> usuarioEntity4 = Entity.entity(usuario3, MediaType.APPLICATION_JSON_TYPE);										
+		pathToCall = "pantalla/delete/";						
+		final Entity<PantallaEntity> pantallaEntity4 = Entity.entity(pantalla3, MediaType.APPLICATION_JSON_TYPE);										
 		final Response responseWrapperDelete = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(usuarioEntity4);				
+				.request(MediaType.APPLICATION_JSON_TYPE).post(pantallaEntity4);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperDelete.getStatus());	
 
 		//--- LOAD ALL
-		pathToCall = "usuario/loadall/";		
-		final Entity<UsuarioEntity> usuarioEntity5 = Entity.entity(new UsuarioEntity(), MediaType.APPLICATION_JSON_TYPE);												
+		pathToCall = "pantalla/loadall/";		
+		final Entity<PantallaEntity> pantallaEntity5 = Entity.entity(new PantallaEntity(), MediaType.APPLICATION_JSON_TYPE);												
 		final Response responseWrapperLoadAll = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(usuarioEntity5);		
+				.request(MediaType.APPLICATION_JSON_TYPE).post(pantallaEntity5);		
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoadAll.getStatus());
 		System.out.println(responseWrapperLoadAll.readEntity(String.class));			
 	}			

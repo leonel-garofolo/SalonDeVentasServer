@@ -7,6 +7,12 @@
 #set( $primaryKeyType = $entity.keyAttributes[0].wrapperType )
 #end
 ## ----------------------------------------------------------------------
+##--------------------------------------------------------------------------------------------------------
+#set( $keyValues   = $fn.buildValues($entity.keyAttributes,     1) )
+#set( $dataValues  = $fn.buildValues($entity.nonKeyAttributes , 1) )
+#set( $dataValues2 = $fn.buildValues($entity.nonKeyAttributes , 2) )
+#set( $keyValues3  = $fn.buildValues($entity.keyAttributes,     3) )
+##--------------------------------------------------------------------------------------------------------
 
 package ${target.javaPackageFromFolder($TEST_SRC)};
 
@@ -52,68 +58,80 @@ public class ${entity}ControllerImplTest extends JerseyTest {
     }
     
 	@Test
-	public void insert${entity}() {
+	public void crud${entity}() {
 		String pathToCall = "${uncapitalizedEntityName}/insert/";
 
-		final ${entity}Entity un${entity} = new ${entity}Entity();
+		//INSERT
+		final ${entity}Entity ${uncapitalizedEntityName} = new ${entity}Entity();
+#if ( $entity.hasAutoIncrementedKey() )
+		// Auto-incremented key : nothing to set in the Primary Key
+#else
+#foreach( $attribute in $entity.keyAttributes )
+		${uncapitalizedEntityName}.${attribute.setter}($keyValues.javaValue($attribute.name)); // "$attribute.databaseName" : $attribute.fullType
+#end
+#end
+		//--- Other values
+#foreach( $attribute in $entity.nonKeyAttributes )
+		${uncapitalizedEntityName}.${attribute.setter}($dataValues.javaValue($attribute.name)); // "$attribute.databaseName" : $attribute.fullType
+#end
 		
-		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity = Entity.entity(un${entity}, MediaType.APPLICATION_JSON_TYPE);				
-		final Response responseWrapper = target(pathToCall)				
+		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity = Entity.entity(${uncapitalizedEntityName}, MediaType.APPLICATION_JSON_TYPE);				
+		final Response responseWrapperInsert = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
 				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperInsert.getStatus());
 		
-		un${entity}.setId${uncapitalizedEntityName}(Integer.valueOf(responseWrapper.readEntity(String.class)));		
-	}
-	
-	@Test
-	public void update${entity}() {
-		String pathToCall = "${uncapitalizedEntityName}/update/";
-
-		final ${entity}Entity un${entity} = new ${entity}Entity();
-		
-		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity = Entity.entity(un${entity}, MediaType.APPLICATION_JSON_TYPE);										
-		final Response responseWrapper = target(pathToCall)				
-				.queryParam("usuario", "leonel")
-				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());		
-	}	
-	
-	@Test
-	public void load${entity}() {
-		final String pathToCall = "${uncapitalizedEntityName}/load/";
-
-		final ${entity}Entity un${entity} = new ${entity}Entity();		
-		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity = Entity.entity(un${entity}, MediaType.APPLICATION_JSON_TYPE);				
-		final Response responseWrapper = target(pathToCall)				
+    	//--- FIND
+    	System.out.println("Find..." );
+		pathToCall = "${uncapitalizedEntityName}/load/";
+		final ${entity}Entity ${uncapitalizedEntityName}2 = new ${entity}Entity();
+#foreach( $field in $entity.keyAttributes )
+		${uncapitalizedEntityName}2.${field.setter}(${uncapitalizedEntityName}.${field.getter}());	
+#end  		
+		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity2 = Entity.entity(${uncapitalizedEntityName}2, MediaType.APPLICATION_JSON_TYPE);				
+		final Response responseWrapperLoad = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")				
-				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-	}	
-	
-		
-	@Test
-	public void loadAll() {
-		final String pathToCall = "producto/loadall/";
-		/*
-		final ProductoEntity prod1 = new ProductoEntity();		
-		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
-		try{
-			final Response responseWrapper = target(pathToCall)				
-					.queryParam("usuario", "leonel")
-					.queryParam("clave", "123")
-					.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);
-			String content = responseWrapper.toString();
-	        System.out.println("Output : " + content);
-			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-		}catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			System.out.println("Error");
-			
-		}
-		*/				
-	}		
+				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity2);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoad.getStatus());		
+		${entity}Entity ${uncapitalizedEntityName}3 = responseWrapperLoad.readEntity(${entity}Entity.class);		
+
+		//--- UPDATE
+		pathToCall = "${uncapitalizedEntityName}/update/";		
+#if ( $entity.nonKeyAttributesCount > 0 )    	
+		//--- Change values
+#foreach( $attribute in $entity.nonKeyAttributes )
+		${uncapitalizedEntityName}3.${attribute.setter}($dataValues2.javaValue($attribute.name)); // "$attribute.databaseName" : $attribute.fullType
+#end    	
+#else
+    	//--- NO UPDATE FOR THIS ENTITY (ALL COLUMNS IN PRIMARY KEY)
+#end
+				
+		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity3 = Entity.entity(${uncapitalizedEntityName}3, MediaType.APPLICATION_JSON_TYPE);										
+		final Response responseWrapperUpdate = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity3);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperUpdate.getStatus());
+
+		//--- DELETE
+		pathToCall = "${uncapitalizedEntityName}/delete/";						
+		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity4 = Entity.entity(${uncapitalizedEntityName}3, MediaType.APPLICATION_JSON_TYPE);										
+		final Response responseWrapperDelete = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity4);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperDelete.getStatus());	
+
+		//--- LOAD ALL
+		pathToCall = "${uncapitalizedEntityName}/loadall/";		
+		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity5 = Entity.entity(new ${entity}Entity(), MediaType.APPLICATION_JSON_TYPE);												
+		final Response responseWrapperLoadAll = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity5);		
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoadAll.getStatus());
+		System.out.println(responseWrapperLoadAll.readEntity(String.class));			
+	}			
 }

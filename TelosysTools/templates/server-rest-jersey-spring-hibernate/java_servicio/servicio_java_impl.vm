@@ -62,13 +62,7 @@ public class ${entity.name}ServiceImpl implements ${entity.name}Service {
 
 	public ${entity.name}Entity load($fn.argumentsListWithType( $entity.keyAttributes )) {
 		try{
-#if ( $entity.hasCompositePrimaryKey() )
-		// Build the composite key
-		$primaryKeyType key = new $primaryKeyType( $fn.argumentsList( $entity.keyAttributes ) );
-			return ${uncapitalizedEntityName}Persistence.load(key);
-#else
-			return ${uncapitalizedEntityName}Persistence.load( $fn.argumentsList( $entity.keyAttributes ) );
-#end	
+			return ${uncapitalizedEntityName}Persistence.load( $fn.argumentsList( $entity.keyAttributes ) );	
 		}catch (Exception e) {
 			e.printStackTrace();
 			return null;

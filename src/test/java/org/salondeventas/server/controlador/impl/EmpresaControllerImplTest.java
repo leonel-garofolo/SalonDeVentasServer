@@ -43,68 +43,72 @@ public class EmpresaControllerImplTest extends JerseyTest {
     }
     
 	@Test
-	public void insertEmpresa() {
+	public void crudEmpresa() {
 		String pathToCall = "empresa/insert/";
 
-		final EmpresaEntity unEmpresa = new EmpresaEntity();
+		//INSERT
+		final EmpresaEntity empresa = new EmpresaEntity();
+		// Auto-incremented key : nothing to set in the Primary Key
+		//--- Other values
+		empresa.setDescripcion("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "descripcion" : java.lang.String
+		empresa.setDireccion("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "direccion" : java.lang.String
+		empresa.setLogo(null); // "logo" : byte[]
+		empresa.setNombre("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "nombre" : java.lang.String
+		empresa.setTelefono("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "telefono" : java.lang.String
 		
-		final Entity<EmpresaEntity> empresaEntity = Entity.entity(unEmpresa, MediaType.APPLICATION_JSON_TYPE);				
-		final Response responseWrapper = target(pathToCall)				
+		final Entity<EmpresaEntity> empresaEntity = Entity.entity(empresa, MediaType.APPLICATION_JSON_TYPE);				
+		final Response responseWrapperInsert = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
 				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperInsert.getStatus());
 		
-		unEmpresa.setIdempresa(Integer.valueOf(responseWrapper.readEntity(String.class)));		
-	}
-	
-	@Test
-	public void updateEmpresa() {
-		String pathToCall = "empresa/update/";
-
-		final EmpresaEntity unEmpresa = new EmpresaEntity();
-		
-		final Entity<EmpresaEntity> empresaEntity = Entity.entity(unEmpresa, MediaType.APPLICATION_JSON_TYPE);										
-		final Response responseWrapper = target(pathToCall)				
-				.queryParam("usuario", "leonel")
-				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());		
-	}	
-	
-	@Test
-	public void loadEmpresa() {
-		final String pathToCall = "empresa/load/";
-
-		final EmpresaEntity unEmpresa = new EmpresaEntity();		
-		final Entity<EmpresaEntity> empresaEntity = Entity.entity(unEmpresa, MediaType.APPLICATION_JSON_TYPE);				
-		final Response responseWrapper = target(pathToCall)				
+    	//--- FIND
+    	System.out.println("Find..." );
+		pathToCall = "empresa/load/";
+		final EmpresaEntity empresa2 = new EmpresaEntity();
+		empresa2.setIdempresa(empresa.getIdempresa());	
+		final Entity<EmpresaEntity> empresaEntity2 = Entity.entity(empresa2, MediaType.APPLICATION_JSON_TYPE);				
+		final Response responseWrapperLoad = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")				
-				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-	}	
-	
-		
-	@Test
-	public void loadAll() {
-		final String pathToCall = "producto/loadall/";
-		/*
-		final ProductoEntity prod1 = new ProductoEntity();		
-		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
-		try{
-			final Response responseWrapper = target(pathToCall)				
-					.queryParam("usuario", "leonel")
-					.queryParam("clave", "123")
-					.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);
-			String content = responseWrapper.toString();
-	        System.out.println("Output : " + content);
-			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-		}catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			System.out.println("Error");
-			
-		}
-		*/				
-	}		
+				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity2);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoad.getStatus());		
+		EmpresaEntity empresa3 = responseWrapperLoad.readEntity(EmpresaEntity.class);		
+
+		//--- UPDATE
+		pathToCall = "empresa/update/";		
+		//--- Change values
+		empresa3.setDescripcion("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "descripcion" : java.lang.String
+		empresa3.setDireccion("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "direccion" : java.lang.String
+		empresa3.setLogo(null); // "logo" : byte[]
+		empresa3.setNombre("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "nombre" : java.lang.String
+		empresa3.setTelefono("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "telefono" : java.lang.String
+				
+		final Entity<EmpresaEntity> empresaEntity3 = Entity.entity(empresa3, MediaType.APPLICATION_JSON_TYPE);										
+		final Response responseWrapperUpdate = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity3);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperUpdate.getStatus());
+
+		//--- DELETE
+		pathToCall = "empresa/delete/";						
+		final Entity<EmpresaEntity> empresaEntity4 = Entity.entity(empresa3, MediaType.APPLICATION_JSON_TYPE);										
+		final Response responseWrapperDelete = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity4);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperDelete.getStatus());	
+
+		//--- LOAD ALL
+		pathToCall = "empresa/loadall/";		
+		final Entity<EmpresaEntity> empresaEntity5 = Entity.entity(new EmpresaEntity(), MediaType.APPLICATION_JSON_TYPE);												
+		final Response responseWrapperLoadAll = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(empresaEntity5);		
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoadAll.getStatus());
+		System.out.println(responseWrapperLoadAll.readEntity(String.class));			
+	}			
 }

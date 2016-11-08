@@ -43,68 +43,68 @@ public class LineadeventaControllerImplTest extends JerseyTest {
     }
     
 	@Test
-	public void insertLineadeventa() {
+	public void crudLineadeventa() {
 		String pathToCall = "lineadeventa/insert/";
 
-		final LineadeventaEntity unLineadeventa = new LineadeventaEntity();
+		//INSERT
+		final LineadeventaEntity lineadeventa = new LineadeventaEntity();
+		lineadeventa.setIdlineadeventa(100); // "idlineadeventa" : java.lang.Integer
+		lineadeventa.setIdproducto(100); // "idproducto" : java.lang.Integer
+		lineadeventa.setIdventa(100); // "idVenta" : java.lang.Integer
+		//--- Other values
+		lineadeventa.setPrecio((new BigDecimal(10000))); // "precio" : java.math.BigDecimal
 		
-		final Entity<LineadeventaEntity> lineadeventaEntity = Entity.entity(unLineadeventa, MediaType.APPLICATION_JSON_TYPE);				
-		final Response responseWrapper = target(pathToCall)				
+		final Entity<LineadeventaEntity> lineadeventaEntity = Entity.entity(lineadeventa, MediaType.APPLICATION_JSON_TYPE);				
+		final Response responseWrapperInsert = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")
 				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperInsert.getStatus());
 		
-		unLineadeventa.setIdlineadeventa(Integer.valueOf(responseWrapper.readEntity(String.class)));		
-	}
-	
-	@Test
-	public void updateLineadeventa() {
-		String pathToCall = "lineadeventa/update/";
-
-		final LineadeventaEntity unLineadeventa = new LineadeventaEntity();
-		
-		final Entity<LineadeventaEntity> lineadeventaEntity = Entity.entity(unLineadeventa, MediaType.APPLICATION_JSON_TYPE);										
-		final Response responseWrapper = target(pathToCall)				
-				.queryParam("usuario", "leonel")
-				.queryParam("clave", "123")
-				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());		
-	}	
-	
-	@Test
-	public void loadLineadeventa() {
-		final String pathToCall = "lineadeventa/load/";
-
-		final LineadeventaEntity unLineadeventa = new LineadeventaEntity();		
-		final Entity<LineadeventaEntity> lineadeventaEntity = Entity.entity(unLineadeventa, MediaType.APPLICATION_JSON_TYPE);				
-		final Response responseWrapper = target(pathToCall)				
+    	//--- FIND
+    	System.out.println("Find..." );
+		pathToCall = "lineadeventa/load/";
+		final LineadeventaEntity lineadeventa2 = new LineadeventaEntity();
+		lineadeventa2.setIdlineadeventa(lineadeventa.getIdlineadeventa());	
+		lineadeventa2.setIdproducto(lineadeventa.getIdproducto());	
+		lineadeventa2.setIdventa(lineadeventa.getIdventa());	
+		final Entity<LineadeventaEntity> lineadeventaEntity2 = Entity.entity(lineadeventa2, MediaType.APPLICATION_JSON_TYPE);				
+		final Response responseWrapperLoad = target(pathToCall)				
 				.queryParam("usuario", "leonel")
 				.queryParam("clave", "123")				
-				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity);				
-		assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-	}	
-	
-		
-	@Test
-	public void loadAll() {
-		final String pathToCall = "producto/loadall/";
-		/*
-		final ProductoEntity prod1 = new ProductoEntity();		
-		final Entity<ProductoEntity> prodEntity = Entity.entity(prod1, MediaType.APPLICATION_JSON_TYPE);
-		try{
-			final Response responseWrapper = target(pathToCall)				
-					.queryParam("usuario", "leonel")
-					.queryParam("clave", "123")
-					.request(MediaType.APPLICATION_JSON_TYPE).post(prodEntity);
-			String content = responseWrapper.toString();
-	        System.out.println("Output : " + content);
-			assertEquals(Response.Status.OK.getStatusCode(), responseWrapper.getStatus());
-		}catch (ConstraintViolationException e) {
-			e.printStackTrace();
-			System.out.println("Error");
-			
-		}
-		*/				
-	}		
+				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity2);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoad.getStatus());		
+		LineadeventaEntity lineadeventa3 = responseWrapperLoad.readEntity(LineadeventaEntity.class);		
+
+		//--- UPDATE
+		pathToCall = "lineadeventa/update/";		
+		//--- Change values
+		lineadeventa3.setPrecio((new BigDecimal(20000))); // "precio" : java.math.BigDecimal
+				
+		final Entity<LineadeventaEntity> lineadeventaEntity3 = Entity.entity(lineadeventa3, MediaType.APPLICATION_JSON_TYPE);										
+		final Response responseWrapperUpdate = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity3);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperUpdate.getStatus());
+
+		//--- DELETE
+		pathToCall = "lineadeventa/delete/";						
+		final Entity<LineadeventaEntity> lineadeventaEntity4 = Entity.entity(lineadeventa3, MediaType.APPLICATION_JSON_TYPE);										
+		final Response responseWrapperDelete = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity4);				
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperDelete.getStatus());	
+
+		//--- LOAD ALL
+		pathToCall = "lineadeventa/loadall/";		
+		final Entity<LineadeventaEntity> lineadeventaEntity5 = Entity.entity(new LineadeventaEntity(), MediaType.APPLICATION_JSON_TYPE);												
+		final Response responseWrapperLoadAll = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(lineadeventaEntity5);		
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoadAll.getStatus());
+		System.out.println(responseWrapperLoadAll.readEntity(String.class));			
+	}			
 }
