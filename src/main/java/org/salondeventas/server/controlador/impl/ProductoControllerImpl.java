@@ -17,9 +17,6 @@ import org.salondeventas.server.services.UsuarioSeguridadService;
 import org.salondeventas.server.util.MensajesSistema;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Path("/producto")
 public class ProductoControllerImpl implements ProductoController{
 	
@@ -96,7 +93,7 @@ public class ProductoControllerImpl implements ProductoController{
 	@Path("/loadall/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ProductoEntity> loadAll(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+	public List<ProductoEntity> loadAll(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {		
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 			List<ProductoEntity> productos=  productoService.loadAll();
 			if(productos != null){

@@ -4,14 +4,12 @@ package org.salondeventas.server.controlador.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Test;
@@ -33,7 +31,7 @@ public class ProductoControllerImplTest extends JerseyTest {
 	@Override
 	protected Application configure() {
 		productoControlador = Mockito.mock(ProductoControllerImpl.class);
-		ResourceConfig app = new ResourceConfig(ProductoControllerImpl.class);
+		MyApplication app = new MyApplication();		
 		return app;
 	}	
 
@@ -61,6 +59,7 @@ public class ProductoControllerImplTest extends JerseyTest {
 				.queryParam("clave", "123")
 				.request(MediaType.APPLICATION_JSON_TYPE).post(productoEntity);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperInsert.getStatus());
+		producto.setIdproducto(new Integer(responseWrapperInsert.readEntity(String.class)));
 		
     	//--- FIND
     	System.out.println("Find..." );

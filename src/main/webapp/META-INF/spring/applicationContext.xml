@@ -3,46 +3,45 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	 xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
-
 	
-	<mvc:annotation-driven/>
 	<context:component-scan base-package="org.salondeventas.server" />
 	<context:annotation-config />
 	<context:spring-configured />
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<context:property-placeholder location="classpath*:META-INF/*.properties" />
-	<util:properties id="databaseProp"
-		location="classpath:META-INF/database.properties" />
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close" p:driverClassName="${database.driverClassName}"
-		p:url="${database.url}" p:username="${database.username}" p:password="${database.password}" />
-
+	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager"
 		scope="prototype">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-
+	
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="persistence-unit1" />
 	</bean>
-	<!-- <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
+	
+	<!--
+	<util:properties id="databaseProp"
+		location="classpath:META-INF/database.properties" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" p:driverClassName="${database.driverClassName}"
+		p:url="${database.url}" p:username="${database.username}" p:password="${database.password}" />
+		
+	 <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"> 
 		<property name="dataSource" ref="dataSource" /> <property name="packagesToScan" 
 		value="org.salondeventas.server.modelo.jpa" /> <property name="hibernateProperties"> 
 		<props> <prop key="hibernate.dialect">${database.dialect}</prop> <prop key="hibernate.show_sql">true</prop> 
 		<prop key="format_sql">true</prop> <prop key="hibernate.hbm2ddl.auto">update</prop> 
 		<prop key="cache.provider_class">org.hibernate.cache.NoCacheProvider</prop> 
 		</props> </property> </bean> -->
-
 </beans>

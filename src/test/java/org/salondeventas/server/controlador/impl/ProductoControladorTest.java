@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,7 +30,7 @@ public class ProductoControladorTest extends JerseyTest {
 	@Override
 	protected Application configure() {
 		productoControlador = Mockito.mock(ProductoControllerImpl.class);
-		Application app = new Application();		
+		MyApplication app = new MyApplication();		
 		return app;
 	}	
 
