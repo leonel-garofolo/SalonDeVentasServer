@@ -4,12 +4,14 @@ package org.salondeventas.server.controlador.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.After;
 import org.junit.Test;
@@ -31,7 +33,7 @@ public class ProductoControllerImplTest extends JerseyTest {
 	@Override
 	protected Application configure() {
 		productoControlador = Mockito.mock(ProductoControllerImpl.class);
-		MyApplication app = new MyApplication();		
+		ResourceConfig app = new ResourceConfig(ProductoControllerImpl.class);
 		return app;
 	}	
 
@@ -52,6 +54,7 @@ public class ProductoControllerImplTest extends JerseyTest {
 		producto.setCodbarras("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"); // "codBarras" : java.lang.String
 		producto.setMininventario(100); // "minInventario" : java.lang.Integer
 		producto.setPrecio((new BigDecimal(10000))); // "precio" : java.math.BigDecimal
+		producto.setCantidadStock(100); // "cantidad_stock" : java.lang.Integer
 		
 		final Entity<ProductoEntity> productoEntity = Entity.entity(producto, MediaType.APPLICATION_JSON_TYPE);				
 		final Response responseWrapperInsert = target(pathToCall)				
@@ -59,7 +62,7 @@ public class ProductoControllerImplTest extends JerseyTest {
 				.queryParam("clave", "123")
 				.request(MediaType.APPLICATION_JSON_TYPE).post(productoEntity);				
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperInsert.getStatus());
-		producto.setIdproducto(new Integer(responseWrapperInsert.readEntity(String.class)));
+		producto.setIdproducto(Integer.valueOf(responseWrapperInsert.readEntity(String.class)));
 		
     	//--- FIND
     	System.out.println("Find..." );
@@ -81,6 +84,7 @@ public class ProductoControllerImplTest extends JerseyTest {
 		producto3.setCodbarras("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"); // "codBarras" : java.lang.String
 		producto3.setMininventario(200); // "minInventario" : java.lang.Integer
 		producto3.setPrecio((new BigDecimal(20000))); // "precio" : java.math.BigDecimal
+		producto3.setCantidadStock(200); // "cantidad_stock" : java.lang.Integer
 				
 		final Entity<ProductoEntity> productoEntity3 = Entity.entity(producto3, MediaType.APPLICATION_JSON_TYPE);										
 		final Response responseWrapperUpdate = target(pathToCall)				

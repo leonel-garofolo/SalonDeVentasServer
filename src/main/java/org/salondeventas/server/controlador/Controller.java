@@ -8,6 +8,6 @@ public interface Controller <T, ID extends Serializable> {
 	public String insert(String usuario, String clave, T entity);
 	public String update(String usuario, String clave, T entity);
 	public String delete(String usuario, String clave, T entity);	
-	public T load(String usuario, String clave, T entity) throws Exception;
+	public T load(String usuario, String clave, T entity);
 	public List<T> loadAll(String usuario, String clave);
 }

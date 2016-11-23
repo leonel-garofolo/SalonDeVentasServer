@@ -1,0 +1,65 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+#set($toLowerCaseEntityName = $fn.toLowerCase(${entity.name}) )
+##--------------------------------------------------------------------------------------------------------
+#set( $keyValues   = $fn.buildValues($entity.keyAttributes,     1) )
+#set( $dataValues  = $fn.buildValues($entity.nonKeyAttributes , 1) )
+#set( $dataValues2 = $fn.buildValues($entity.nonKeyAttributes , 2) )
+#set( $keyValues3  = $fn.buildValues($entity.keyAttributes,     3) )
+##--------------------------------------------------------------------------------------------------------
+
+package ${target.javaPackageFromFolder($TEST_SRC)};
+
+import static org.junit.Assert.assertEquals;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.test.JerseyTest;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.salondeventas.server.modelo.informe.jpa.${entity}Entity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:META-INF/spring/applicationContext.xml"})
+@WebAppConfiguration
+public class ${entity}ControllerImplTest extends JerseyTest {
+	
+	private ${entity}ControllerImpl ${uncapitalizedEntityName}Controlador;
+			
+	@Override
+	protected Application configure() {
+		${uncapitalizedEntityName}Controlador = Mockito.mock(${entity}ControllerImpl.class);
+		ResourceConfig app = new ResourceConfig(${entity}ControllerImpl.class);
+		return app;
+	}	
+
+    @After
+    public void after() throws Exception {
+        super.tearDown();
+    }
+    
+	@Test
+	public void crud${entity}() {
+		//--- LOAD ALL
+		String pathToCall = "${uncapitalizedEntityName}/loadall/";		
+		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity5 = Entity.entity(new ${entity}Entity(), MediaType.APPLICATION_JSON_TYPE);												
+		final Response responseWrapperLoadAll = target(pathToCall)				
+				.queryParam("usuario", "leonel")
+				.queryParam("clave", "123")
+				.request(MediaType.APPLICATION_JSON_TYPE).post(${uncapitalizedEntityName}Entity5);		
+		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperLoadAll.getStatus());
+		System.out.println(responseWrapperLoadAll.readEntity(String.class));			
+	}			
+}

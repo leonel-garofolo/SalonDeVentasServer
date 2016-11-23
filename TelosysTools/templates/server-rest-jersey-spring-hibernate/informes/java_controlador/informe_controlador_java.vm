@@ -1,0 +1,6 @@
+package ${target.javaPackageFromFolder($SRC)};
+
+import ${ROOT_PKG}.modelo.informe.jpa.${entity.name}Entity;
+
+public interface ${entity.name}Controller extends ControllerInforme<${entity.name}Entity, java.lang.Integer>{
+}

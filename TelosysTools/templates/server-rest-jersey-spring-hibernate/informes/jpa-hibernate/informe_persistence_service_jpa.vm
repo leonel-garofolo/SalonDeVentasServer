@@ -1,0 +1,58 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+
+package ${target.javaPackageFromFolder($SRC)};
+
+#foreach( $import in $java.imports($entity.keyAttributes) )
+import $import;
+#end
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
+
+import ${ENTITY_PKG}.informe.jpa.${entity.name}Entity;
+#if ( $entity.hasCompositePrimaryKey() )
+import ${ENTITY_PKG}.jpa.${entity.name}EntityKey;
+#end
+import ${ROOT_PKG}.services.persistence.commons.jpa.GenericJpaService;
+import ${ROOT_PKG}.services.persistence.commons.jpa.JpaOperation;
+import ${ROOT_PKG}.services.persistence.${entity.name}Persistence;
+import org.springframework.stereotype.Service;
+
+/**
+ * JPA implementation for basic persistence operations ( entity "${entity.name}" )
+ * 
+ * @author Telosys Tools Generator
+ *
+ */
+
+@Service("${uncapitalizedEntityName}PersistenceJPA")
+public class ${entity.name}PersistenceJPA extends GenericJpaService<${entity.name}Entity, Long> implements ${entity.name}Persistence {
+
+	/**
+	 * Constructor
+	 */
+	public ${entity.name}PersistenceJPA() {
+		super(${entity.name}Entity.class);
+	}
+
+	@Override
+	public ${entity.name}Entity load( $fn.argumentsListWithType( $entity.keyAttributes ) ) {
+		return super.load( $fn.argumentsList( $entity.keyAttributes ) );	
+	}
+
+	@Override
+	public long countAll() {
+		// JPA operation definition 
+		JpaOperation operation = new JpaOperation() {
+			@Override
+			public Object exectue(EntityManager em) throws PersistenceException {
+				Query query = em.createNamedQuery("${entity.name}Entity.countAll");
+				return query.getSingleResult() ;
+			}
+		} ;
+		// JPA operation execution 
+		return (Long) execute(operation);
+	}
+
+}

@@ -1,0 +1,65 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+#set($toLowerCaseEntityName = $fn.toLowerCase(${entity.name}) )
+
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.util.List;
+import ${ROOT_PKG}.controlador.${entity.name}Controller;
+import ${ROOT_PKG}.modelo.informe.jpa.${entity.name}Entity;
+import ${ROOT_PKG}.services.${entity.name}Service;
+import ${ROOT_PKG}.services.UsuarioSeguridadService;
+import ${ROOT_PKG}.util.MensajesSistema;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Path("/${toLowerCaseEntityName}")
+public class ${entity.name}ControllerImpl implements ${entity.name}Controller{
+	
+	@Autowired
+	protected ${entity.name}Service ${uncapitalizedEntityName}Service;	
+	@Autowired
+	protected UsuarioSeguridadService usuarioSeguridadService;							
+
+	@POST
+	@Path("/load/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ${entity.name}Entity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ${entity.name}Entity entity) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+			${entity.name}Entity producto= ${uncapitalizedEntityName}Service.load(
+#set( $size = $entity.keyAttributes.size() )
+#foreach( $field in $entity.keyAttributes )
+				entity.${field.getter}()#if($foreach.count < $size),#end
+	
+#end  
+			);
+			if(producto != null){
+				return producto;
+			}
+			return null;
+		}else{
+			return null;
+		}
+	}
+
+	@POST
+	@Path("/loadall/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<${entity.name}Entity> loadAll(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave) {
+		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
+			List<${entity.name}Entity> ${uncapitalizedEntityName}s=  ${uncapitalizedEntityName}Service.loadAll();
+			if(${uncapitalizedEntityName}s != null){
+				return ${uncapitalizedEntityName}s;
+			}
+			return null;
+		}else{
+			return null;
+		}
+	}
+}

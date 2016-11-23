@@ -59,7 +59,7 @@ public class ${entity}ControllerImplTest extends JerseyTest {
     
 	@Test
 	public void crud${entity}() {
-		String pathToCall = "${uncapitalizedEntityName}/insert/";
+		String pathToCall = "${toLowerCaseEntityName}/insert/";
 
 		//INSERT
 		final ${entity}Entity ${uncapitalizedEntityName} = new ${entity}Entity();
@@ -84,7 +84,7 @@ public class ${entity}ControllerImplTest extends JerseyTest {
 		
     	//--- FIND
     	System.out.println("Find..." );
-		pathToCall = "${uncapitalizedEntityName}/load/";
+		pathToCall = "${toLowerCaseEntityName}/load/";
 		final ${entity}Entity ${uncapitalizedEntityName}2 = new ${entity}Entity();
 #foreach( $field in $entity.keyAttributes )
 		${uncapitalizedEntityName}2.${field.setter}(${uncapitalizedEntityName}.${field.getter}());	
@@ -98,7 +98,7 @@ public class ${entity}ControllerImplTest extends JerseyTest {
 		${entity}Entity ${uncapitalizedEntityName}3 = responseWrapperLoad.readEntity(${entity}Entity.class);		
 
 		//--- UPDATE
-		pathToCall = "${uncapitalizedEntityName}/update/";		
+		pathToCall = "${toLowerCaseEntityName}/update/";		
 #if ( $entity.nonKeyAttributesCount > 0 )    	
 		//--- Change values
 #foreach( $attribute in $entity.nonKeyAttributes )
@@ -116,7 +116,7 @@ public class ${entity}ControllerImplTest extends JerseyTest {
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperUpdate.getStatus());
 
 		//--- DELETE
-		pathToCall = "${uncapitalizedEntityName}/delete/";						
+		pathToCall = "${toLowerCaseEntityName}/delete/";						
 		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity4 = Entity.entity(${uncapitalizedEntityName}3, MediaType.APPLICATION_JSON_TYPE);										
 		final Response responseWrapperDelete = target(pathToCall)				
 				.queryParam("usuario", "leonel")
@@ -125,7 +125,7 @@ public class ${entity}ControllerImplTest extends JerseyTest {
 		assertEquals(Response.Status.OK.getStatusCode(), responseWrapperDelete.getStatus());	
 
 		//--- LOAD ALL
-		pathToCall = "${uncapitalizedEntityName}/loadall/";		
+		pathToCall = "${toLowerCaseEntityName}/loadall/";		
 		final Entity<${entity}Entity> ${uncapitalizedEntityName}Entity5 = Entity.entity(new ${entity}Entity(), MediaType.APPLICATION_JSON_TYPE);												
 		final Response responseWrapperLoadAll = target(pathToCall)				
 				.queryParam("usuario", "leonel")

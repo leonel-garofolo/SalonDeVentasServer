@@ -1,0 +1,28 @@
+#set($uncapitalizedEntityName = $fn.uncapitalize(${entity.name}) )
+
+package ${target.javaPackageFromFolder($SRC)};
+
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import ${ROOT_PKG}.services.persistence.${entity.name}Persistence;
+import ${ROOT_PKG}.modelo.informe.jpa.${entity.name}Entity;
+import ${ROOT_PKG}.services.${entity.name}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("${uncapitalizedEntityName}Service")
+public class ${entity.name}ServiceImpl implements ${entity.name}Service {
+	
+	@Autowired
+	private ${entity.name}Persistence ${uncapitalizedEntityName}Persistence;
+	
+	public List<${entity.name}Entity> loadAll() {		
+		try {
+			return ${uncapitalizedEntityName}Persistence.loadAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

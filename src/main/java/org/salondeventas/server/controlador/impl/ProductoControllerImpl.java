@@ -77,7 +77,7 @@ public class ProductoControllerImpl implements ProductoController{
 	@Path("/load/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public ProductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ProductoEntity entity) throws Exception {
+	public ProductoEntity load(@QueryParam("usuario") String usuario, @QueryParam("clave") String clave, ProductoEntity entity) {
 		if(usuarioSeguridadService.comprobarUsuario(usuario, clave)){
 					ProductoEntity producto= productoService.load(entity.getIdproducto());		
 			if(producto != null){					
